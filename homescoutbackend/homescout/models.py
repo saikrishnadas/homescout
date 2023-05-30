@@ -1,17 +1,29 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
-class User(models.Model):
-    name = models.CharField(max_length=255)
+# class User(models.Model):
+#     name = models.CharField(max_length=255)
+#     email = models.EmailField(unique=True)
+#     password = models.CharField(max_length=255)
+#     phone_number = models.CharField(max_length=10)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+
+#     def __str__(self):
+#         return self.email
+
+
+class User(AbstractUser):
+    # Add additional fields here
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=10)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.email
+        return self.username
 
 class Property(models.Model):
     title = models.CharField(max_length=255,db_index=True)
@@ -21,7 +33,7 @@ class Property(models.Model):
     bedrooms = models.PositiveIntegerField(null=True)
     bathrooms = models.PositiveIntegerField(null=True)
     parking = models.BooleanField(default=False,null=True)
-    listed_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name="properties",null=True)
+    listed_by = models.ForeignKey(User,on_delete=models.SET_NULL,related_name="properties",null=True)
     property_on = models.CharField(max_length=255,null=True)
     listed_on = models.DateTimeField(auto_now_add=True,null=True)
     bachelors_allowed = models.BooleanField(default=True,null=True)
