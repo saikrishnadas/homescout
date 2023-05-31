@@ -10,7 +10,13 @@ from .serializers import PropertySerializer,UserSerializer
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken,AccessToken
+from rest_framework.permissions import AllowAny
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.authentication import JWTAuthentication
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -124,3 +130,21 @@ class UserRegistrationAPIView(APIView):
             return Response(tokens, status=status.HTTP_201_CREATED)
         
         return Response(serializers.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+class ValidateAccessTokenView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = [JWTAuthentication]
+
+    def get(self, request):
+        try:
+            if not request.user.is_authenticated:
+                raise AuthenticationFailed('Invalid or expired token')
+
+            # Token is valid
+            return Response({'valid': True}, status=status.HTTP_200_OK)
+        except AuthenticationFailed as e:
+            return Response({'error': str(e)}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            logger.exception('An error occurred during token validation')  # Log the exception
+            return Response({'error': 'An unexpected error occurred'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
