@@ -18,8 +18,10 @@ function LoginPage() {
                 username,
                 password,
             })
-            const { access_token, refresh_token } = response.data
-            dispatch(login({ accessToken: access_token, refreshToken: refresh_token }))
+            console.log(response)
+            const { access, refresh } = response?.data
+            dispatch(login({ accessToken: access, refreshToken: refresh }))
+            localStorage.setItem('authTokens', JSON.stringify(response?.data));
             navigate("/home");
         } catch (error) {
             console.log("Login failed!", error)

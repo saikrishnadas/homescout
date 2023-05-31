@@ -21,14 +21,6 @@ function Home() {
   )
 }
 
-const Login = () => {
-  return (
-    <div>
-      Login Page
-    </div>
-  )
-}
-
 
 function App() {
   return (
@@ -46,6 +38,7 @@ function App() {
             }
           />
         </Routes>
+
       </Router>
     </Provider>
 
