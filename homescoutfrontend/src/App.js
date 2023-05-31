@@ -1,24 +1,54 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import PrivateRoute from './utils/PrivateRoute';
+import LoginPage from './Login';
+
+function Test() {
+  return (
+    <div>
+      Test Page
+    </div>
+  )
+}
+
+function Home() {
+  return (
+    <div>
+      Home Page
+    </div>
+  )
+}
+
+const Login = () => {
+  return (
+    <div>
+      Login Page
+    </div>
+  )
+}
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Test />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/home"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </Provider>
+
   );
 }
 
