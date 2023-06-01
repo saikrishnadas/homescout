@@ -6,6 +6,7 @@ import PrivateRoute from './utils/PrivateRoute';
 import LoginPage from './Login';
 import RegisterPage from './Register';
 import HomePage from './HomePage';
+import Properties from './Properties';
 
 function Test() {
   return (
@@ -25,6 +26,8 @@ function App() {
           <Route path="/" element={<Test />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/properties" element={<Properties />} />
+
           <Route
             path="/home"
             element={

@@ -73,7 +73,7 @@ const validateToken = () => {
     } else {
         // Tokens are not stored in localStorage
         console.log("Tokens are not stored in localStorage");
-        if (currentURL.split("/")[3] !== "login" && currentURL.split("/")[3] !== "register") {
+        if (currentURL.split("/")[3] !== "login" && currentURL.split("/")[3] !== "register" && currentURL.split("/")[3] !== "properties") {
             window.location.href = '/login'
         }
 
