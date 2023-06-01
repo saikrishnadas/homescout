@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import store from './store';
 import PrivateRoute from './utils/PrivateRoute';
 import LoginPage from './Login';
+import RegisterPage from './Register';
+import HomePage from './HomePage';
 
 function Test() {
   return (
@@ -13,13 +15,6 @@ function Test() {
   )
 }
 
-function Home() {
-  return (
-    <div>
-      Home Page
-    </div>
-  )
-}
 
 
 function App() {
@@ -28,12 +23,13 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Test />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route
             path="/home"
             element={
               <PrivateRoute>
-                <Home />
+                <HomePage />
               </PrivateRoute>
             }
           />

@@ -121,11 +121,12 @@ class UserRegistrationAPIView(APIView):
         serializers = UserSerializer(data=request.data)
         if serializers.is_valid():
             user = serializers.save()
-
+            print("user",user)
             refresh = RefreshToken.for_user(user)
+            print("refresh",refresh)
             tokens = {
-                'access_token': str(refresh.access_token),
-                'refresh_token': str(refresh),
+                'access': str(refresh.access_token),
+                'refresh': str(refresh),
             }
             return Response(tokens, status=status.HTTP_201_CREATED)
         
