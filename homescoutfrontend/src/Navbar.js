@@ -81,7 +81,7 @@ function Navbar() {
                 </div>
             </div>
             <div>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <div>
                         <GoPerson style={{ color: "white", fontSize: "24px" }} />
                     </div>

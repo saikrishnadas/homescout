@@ -1,0 +1,60 @@
+.propertiesbar-container {
+	background-color: white;
+	height: 50px;
+	padding-left: 10%;
+	padding-right: 10%;
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 2px solid #37a5a9;
+}
+
+.propertiesbar-selector {
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+}
+
+.view-properites-container {
+	display: flex;
+	align-items: center;
+}
+
+.property-count-botton {
+	display: flex;
+	align-items: center;
+	background-color: white;
+	width: 180px;
+	height: 40px;
+	justify-content: center;
+	box-shadow: 1px 2px 4px #8888888e;
+	cursor: pointer;
+}
+
+.property-count-botton-selected {
+	display: flex;
+	align-items: center;
+	background-color: #37a5a9;
+	width: 180px;
+	height: 40px;
+	justify-content: center;
+	box-shadow: 1px 2px 4px #8888888e;
+	cursor: pointer;
+	border-top: 2px solid #015e62;
+}
+
+.property-count-botton-text {
+	color: grey;
+}
+
+.property-count-botton-text-selected {
+	color: white;
+}
+
+.property-count-botton:hover {
+	background-color: #37a5a9;
+	border-top: 2px solid #015e62;
+}
+
+.property-count-botton-text:hover {
+	color: white;
+}

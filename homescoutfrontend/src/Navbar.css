@@ -1,6 +1,6 @@
 .navbar-container {
 	background-color: #111328;
-	height: 50px;
+	height: 60px;
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
@@ -9,6 +9,7 @@
 .navbar-left {
 	display: flex;
 	align-items: center;
+	gap: 10px;
 }
 .company-logo {
 	color: white;
