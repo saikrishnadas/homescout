@@ -27,6 +27,7 @@
 .dropdown-menu-options {
 	display: flex;
 	flex-direction: column;
+	user-select: none;
 }
 
 .dropdown-menu-options-item {
