@@ -12,7 +12,7 @@ function Detail() {
             <Navbar />
             <div className='detail-container'>
                 {/* Parent DIV */}
-                <div>
+                <div >
                     <div className='overview-container'>
                         {/* Details */}
                         <div className='overview-image'>
@@ -57,8 +57,8 @@ function Detail() {
                         <div style={{ marginTop: "20px" }}>This property is a 3 BHK Apartment in Aluva and is available for Rent</div>
                     </div>
                 </div>
-                <div>
-                    <div className='user-form'>
+                <div >
+                    <div className='user-form' style={{ border: "3px solid #37a5a9", paddingTop: "10px" }}>
                         <div className='profile-container'>
                             <div>
                                 <GoPerson style={{ color: "black", fontSize: "34px" }} />
