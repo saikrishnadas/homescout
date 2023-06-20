@@ -59,7 +59,7 @@ function Navbar() {
                 <div className="company-logo">LOGO</div>
             </div>
             <div>
-                <div class="search-container">
+                <div className="search-container">
                     <Dropdown trigger={["click"]} menu={{ items }} placement="bottom">
                         <div
                             className="location-change-menu"

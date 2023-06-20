@@ -6,10 +6,31 @@ import { Dropdown, Checkbox, Button } from 'antd';
 import { AiOutlineCaretDown } from "react-icons/ai";
 import "./Properties.css"
 import Property from './Property';
+import { useQuery } from "react-query"
+import axios from 'axios';
+
+
+
 
 function Properties() {
     const [checkedList, setCheckedList] = useState("Relevance")
     const options = ['Relevance', 'Posted On (Recent first)', 'Posted On (Oldest first)', 'Price (High to Low)', 'Price (Low to High)']
+
+    const fetchProperties = () => {
+        return axios.get("http://127.0.0.1:8000/api/properties")
+    }
+
+    const { isLoading, data, isError, error } = useQuery("properties", fetchProperties)
+
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
+
+
+    if (isError) {
+        return <div>{error.message}</div>
+    }
+
 
     const menu = (
         <div className="dropdown-menu-options">
@@ -38,11 +59,20 @@ function Properties() {
                     </div>
                 </div>
                 <div style={{ marginTop: "10px", marginBottom: "10px", display: "flex", flexDirection: "column", gap: "10px" }}>
-                    <Property />
-                    <Property />
-                    <Property />
-                    <Property />
-                    <Property />
+                    {data?.data.map((property) => (
+
+                        <Property key={property.id}
+                            id={property.id}
+                            title={property.title}
+                            rent={property.rent}
+                            carpetArea={property.carpet_area}
+                            bedrooms={property.bedrooms}
+                            bathrooms={property.bathrooms}
+                            parking={property.parking}
+                            propertyDescription={property.property_description}
+                            listedBy={property.listed_by}
+                            listedOn={property.listed_on} />
+                    ))}
                 </div>
             </div>
         </div>

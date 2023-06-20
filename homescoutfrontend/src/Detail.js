@@ -5,8 +5,35 @@ import { Checkbox } from 'antd';
 import {
     GoPerson,
 } from "react-icons/go";
+import { useQuery } from "react-query"
+import axios from 'axios';
+import { useParams } from "react-router-dom"
+import moment from 'moment'
 
 function Detail() {
+    const { id } = useParams();
+
+    const fetchProperty = () => {
+        return axios.get(`http://127.0.0.1:8000/api/properties/${id}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+
+    const { isLoading, data, isError, error } = useQuery("property", fetchProperty)
+
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
+
+
+    if (isError) {
+        return <div>{error.message}</div>
+    }
+
+    console.log(data)
+
     return (
         <div>
             <Navbar />
@@ -22,39 +49,39 @@ function Detail() {
                             {/* Right Detail */}
                             <div className='overview-title'>
                                 {/* Title */}
-                                <span style={{ fontWeight: "bold", fontSize: "22px" }}>3BHK Apartment for Rent</span>
-                                <span>in <span style={{ fontWeight: "bold", fontSize: "22px", color: "#37a5a9", cursor: "pointer" }}>Aluva</span></span>
+                                <span style={{ fontWeight: "bold", fontSize: "22px" }}>{data?.data?.title}</span>
+                                <span>in <span style={{ fontWeight: "bold", fontSize: "22px", color: "#37a5a9", cursor: "pointer" }}>{data?.data?.city}</span></span>
                             </div>
                             <div className='overview-sqft'>
                                 {/* Sq ft area */}
-                                <span style={{ marginLeft: "20px", fontWeight: "bold", fontSize: "20px" }}>₹10,000</span>
+                                <span style={{ marginLeft: "20px", fontWeight: "bold", fontSize: "20px" }}>₹{data?.data?.rent}</span>
                                 <div className='overview-area-wrap'>
-                                    <div className='overview-area-wrap-inner'><span style={{ color: "grey" }}>Super Built-Up Area</span><span style={{ fontWeight: "bold" }}>1200 Sq.Ft</span></div>
-                                    <div className='overview-area-wrap-inner'><span style={{ color: "grey" }}>Carpet Area</span><span style={{ fontWeight: "bold" }}>960 Sq.Ft</span></div>
-                                    <div className='overview-area-wrap-inner'><span style={{ color: "grey" }}>Bedrooms</span><span style={{ fontWeight: "bold" }}>3</span></div>
+                                    <div className='overview-area-wrap-inner'><span style={{ color: "grey" }}>Super Built-Up Area</span><span style={{ fontWeight: "bold" }}>{data?.data?.build_up_area} Sq.Ft</span></div>
+                                    <div className='overview-area-wrap-inner'><span style={{ color: "grey" }}>Carpet Area</span><span style={{ fontWeight: "bold" }}>{data?.data?.carpet_area} Sq.Ft</span></div>
+                                    <div className='overview-area-wrap-inner'><span style={{ color: "grey" }}>Bedrooms</span><span style={{ fontWeight: "bold" }}>{data?.data?.bedrooms}</span></div>
                                 </div>
-                                <div className='overview-area-wrap-inner' style={{ marginLeft: "8%", }}><span style={{ color: "grey" }}>Bathroom</span><span style={{ fontWeight: "bold" }}>3</span></div>
+                                <div className='overview-area-wrap-inner' style={{ marginLeft: "8%", }}><span style={{ color: "grey" }}>Bathroom</span><span style={{ fontWeight: "bold" }}>{data?.data?.bathrooms}</span></div>
                             </div>
                         </div>
                     </div>
                     <div className='features'>
                         <span className='features-main-title'>OVERVIEW</span>
                         <div className='features-items'>
-                            <div className='feature-item'><span className='feature-item-title'>Parking</span><span>No</span></div>
+                            <div className='feature-item'><span className='feature-item-title'>Parking</span><span>{data?.data?.parking ? "Yes" : "No"}</span></div>
                             <div className='feature-item'><span className='feature-item-title'>Furnishing State</span><span>Semi Furnished</span></div>
-                            <div className='feature-item'><span className='feature-item-title'>Listed by</span><span>Kochi Marketing Team</span></div>
+                            <div className='feature-item'><span className='feature-item-title'>Listed by</span><span>{data?.data?.listed_by}</span></div>
                             <div className='feature-item'><span className='feature-item-title'>Property on</span><span>Ground Floor</span></div>
-                            <div className='feature-item'><span className='feature-item-title'>Listed on</span><span>26-Apr</span></div>
-                            <div className='feature-item'><span className='feature-item-title'>Security Deposit</span><span>20000</span></div>
-                            <div className='feature-item'><span className='feature-item-title'>Pet Allowed</span><span>No</span></div>
-                            <div className='feature-item'><span className='feature-item-title'>Non Vegetarian</span><span>Yes</span></div>
+                            <div className='feature-item'><span className='feature-item-title'>Listed on</span><span>{moment(data?.data?.listed_on).format('DD-MMM')}</span></div>
+                            <div className='feature-item'><span className='feature-item-title'>Security Deposit</span><span>{data?.data?.security_deposit}</span></div>
+                            <div className='feature-item'><span className='feature-item-title'>Pet Allowed</span><span>{data?.data?.pet_allowed ? "Yes" : "No"}</span></div>
+                            <div className='feature-item'><span className='feature-item-title'>Non Vegetarian</span><span>{data?.data?.non_vegetarian ? "Yes" : "No"}</span></div>
                             <div className='feature-item'><span className='feature-item-title'>Brokerage terms</span><span>No</span></div>
-                            <div className='feature-item'><span className='feature-item-title'>Bachelors Allowed</span><span>No</span></div>
+                            <div className='feature-item'><span className='feature-item-title'>Bachelors Allowed</span><span>{data?.data?.bachelors_allowed ? "Yes" : "No"}</span></div>
                         </div>
                     </div>
                     <div className='description-container'>
                         <span className='description-title'>Property Description</span>
-                        <div style={{ marginTop: "20px" }}>This property is a 3 BHK Apartment in Aluva and is available for Rent</div>
+                        <div style={{ marginTop: "20px" }}>{data?.data?.property_description}</div>
                     </div>
                 </div>
                 <div >
@@ -64,7 +91,7 @@ function Detail() {
                                 <GoPerson style={{ color: "black", fontSize: "34px" }} />
                             </div>
                             <div>
-                                Kochi Marking Team
+                                {data?.data?.listed_by}
                             </div>
                         </div>
                         <div className='form-under'>

@@ -6,6 +6,12 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	cursor: pointer;
+}
+
+.property-container:hover {
+	box-shadow: 0.5px 0.5px 2px;
+	padding: 20px;
 }
 
 .property-top-container {

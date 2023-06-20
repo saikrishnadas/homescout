@@ -8,6 +8,8 @@ import RegisterPage from './Register';
 import HomePage from './HomePage';
 import Properties from './Properties';
 import Detail from './Detail';
+import { QueryClientProvider, QueryClient } from "react-query"
+import { ReactQueryDevtools } from "react-query/devtools"
 
 function Test() {
   return (
@@ -20,27 +22,31 @@ function Test() {
 
 
 function App() {
+  const queryClient = new QueryClient();
   return (
-    <Provider store={store}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Test />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/properties" element={<Properties />} />
-          <Route path="/details" element={<Detail />} />
-          <Route
-            path="/home"
-            element={
-              <PrivateRoute>
-                <HomePage />
-              </PrivateRoute>
-            }
-          />
-        </Routes>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Test />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/properties" element={<Properties />} />
+            <Route path="/properties/:id" element={<Detail />} />
+            <Route
+              path="/home"
+              element={
+                <PrivateRoute>
+                  <HomePage />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
 
-      </Router>
-    </Provider>
+        </Router>
+      </Provider>
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+    </QueryClientProvider>
 
   );
 }
