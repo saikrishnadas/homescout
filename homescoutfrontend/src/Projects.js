@@ -8,42 +8,19 @@ import "./Properties.css"
 import Property from './Property';
 import { useQuery } from "react-query"
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
 
 
 
-function Properties() {
+
+function Projects() {
     const [checkedList, setCheckedList] = useState("Relevance")
-
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const city = queryParams.get("city");
-    const title = queryParams.get("title");
-    const bedrooms = queryParams.get("bedrooms");
-
     const options = ['Relevance', 'Posted On (Recent first)', 'Posted On (Oldest first)', 'Price (High to Low)', 'Price (Low to High)']
 
     const fetchProperties = () => {
-        try {
-            let url = 'http://127.0.0.1:8000/api/properties/filter/';
-            if (city) {
-                url += `?city=${city.toLowerCase()}`;
-            }
-            if (title) {
-                url += city ? `&title=${title.toLowerCase()}` : `?title=${title.toLowerCase()}`;
-            }
-            if (!city && !title) {
-                url = "http://127.0.0.1:8000/api/properties"
-            }
-            return axios.get(url)
-        } catch (error) {
-            throw new Error(error.response.data.message || 'Failed to fetch properties');
-        }
-
-
+        return axios.get("http://127.0.0.1:8000/api/properties")
     }
 
-    const { isLoading, data, isError, error } = useQuery(['properties', city], fetchProperties, { refetchOnWindowFocus: true })
+    const { isLoading, data, isError, error } = useQuery("properties", fetchProperties)
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -53,8 +30,6 @@ function Properties() {
     if (isError) {
         return <div>{error.message}</div>
     }
-
-    console.log(city)
 
 
     const menu = (
@@ -73,7 +48,7 @@ function Properties() {
             <Filters />
             <div className='properties-container'>
                 <div className='properties-sort-container'>
-                    <span>249 - Apartments, Flats For Rent In Kochi</span>
+                    <span>14 - Projects In Kochi</span>
                     <div className='properties-sort-button'>
                         <span>Sort by: </span>
                         <Dropdown overlay={menu} trigger={['click']}>
@@ -83,7 +58,7 @@ function Properties() {
                         </Dropdown>
                     </div>
                 </div>
-                <div style={{ marginTop: "10px", marginBottom: "10px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                {/* <div style={{ marginTop: "10px", marginBottom: "10px", display: "flex", flexDirection: "column", gap: "10px" }}>
                     {data?.data.map((property) => (
 
                         <Property key={property.id}
@@ -98,10 +73,10 @@ function Properties() {
                             listedBy={property.listed_by}
                             listedOn={property.listed_on} />
                     ))}
-                </div>
+                </div> */}
             </div>
         </div>
     )
 }
 
-export default Properties
+export default Projects

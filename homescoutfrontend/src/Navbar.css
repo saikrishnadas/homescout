@@ -29,7 +29,7 @@ input[type="text"] {
 	outline: none;
 }
 
-button[type="submit"] {
+.search-submit-button {
 	background-color: orange;
 	border: none;
 	padding: 10px;
@@ -37,7 +37,7 @@ button[type="submit"] {
 	cursor: pointer;
 }
 
-button[type="submit"]:hover {
+.search-submit-button:hover {
 	background-color: rgb(183, 120, 3);
 }
 
@@ -46,7 +46,7 @@ button[type="submit"]:hover {
 }
 
 .location-change-menu {
-	width: 80px;
+	width: 124px;
 	height: 40px;
 	background-color: #f3f3f4;
 	cursor: pointer;

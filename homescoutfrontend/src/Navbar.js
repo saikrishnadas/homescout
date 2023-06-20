@@ -1,4 +1,3 @@
-import React from "react";
 import {
     GoThreeBars,
     GoSearch,
@@ -6,48 +5,79 @@ import {
     GoPerson,
 } from "react-icons/go";
 import "./Navbar.css";
-import { Button, Dropdown, Space } from "antd";
+import { Button, Dropdown, Space, Menu } from "antd";
+import { useEffect, useState } from "react"
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const items = [
-    {
-        key: "1",
-        label: (
-            <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.antgroup.com"
-            >
-                1st menu item
-            </a>
-        ),
-    },
-    {
-        key: "2",
-        label: (
-            <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.aliyun.com"
-            >
-                2nd menu item
-            </a>
-        ),
-    },
-    {
-        key: "3",
-        label: (
-            <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.luohanacademy.com"
-            >
-                3rd menu item
-            </a>
-        ),
-    },
-];
+
+const cities = [
+    "Agra",
+    "Ahmedabad",
+    "Aurangabad",
+    "Bangalore",
+    "Bhopal",
+    "Chennai",
+    "Delhi",
+    "Faridabad",
+    "Ghaziabad",
+    "Hyderabad",
+    "Indore",
+    "Jaipur",
+    "Kanpur",
+    "Kochi",
+    "Kolkata",
+    "Ludhiana",
+    "Lucknow",
+    "Meerut",
+    "Mumbai",
+    "Nagpur",
+    "Nashik",
+    "Patna",
+    "Pune",
+    "Rajkot",
+    "Srinagar",
+    "Surat",
+    "Thane",
+    "Varanasi",
+    "Vadodara",
+    "Visakhapatnam"
+]
+
+
+
 
 function Navbar() {
+    const naviagte = useNavigate()
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const queryCity = queryParams.get('city');
+    const [search, setSearch] = useState("")
+
+    const items = cities.map((city, index) => ({
+        key: (index + 1).toString(),
+        label: (
+            <div
+                onClick={() => naviagte(`?city=${city}`)}
+            >
+                {city}
+            </div>
+        ),
+    }));
+
+    const menu = (
+        <Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+            {items.map((item) => (
+                <Menu.Item key={item.key} >
+                    {item.label}
+                </Menu.Item>
+            ))}
+        </Menu>
+    );
+
+    const handleSearch = () => {
+        naviagte(`?city=${queryCity}&title=${search}`)
+    }
+
     return (
         <div
             className="navbar-container"
@@ -60,22 +90,22 @@ function Navbar() {
             </div>
             <div>
                 <div className="search-container">
-                    <Dropdown trigger={["click"]} menu={{ items }} placement="bottom">
+                    <Dropdown trigger={["click"]} overlay={menu} placement="bottomLeft">
                         <div
                             className="location-change-menu"
                         >
                             <span
                                 className="location"
                             >
-                                Kochi
+                                {queryCity}
                             </span>
                             <span>
                                 <GoTriangleDown />
                             </span>
                         </div>
                     </Dropdown>
-                    <input type="text" placeholder="Search..." />
-                    <button type="submit">
+                    <input type="text" placeholder="Search..." onChange={(e) => setSearch(e.target.value)} />
+                    <button className="search-submit-button" onClick={handleSearch}>
                         <GoSearch style={{ color: "white", fontSize: "18px" }} />
                     </button>
                 </div>

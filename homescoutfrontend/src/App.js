@@ -10,6 +10,7 @@ import Properties from './Properties';
 import Detail from './Detail';
 import { QueryClientProvider, QueryClient } from "react-query"
 import { ReactQueryDevtools } from "react-query/devtools"
+import Projects from './Projects';
 
 function Test() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/" element={<Test />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/projects" element={<Projects />} />
             <Route path="/properties" element={<Properties />} />
             <Route path="/properties/:id" element={<Detail />} />
             <Route
