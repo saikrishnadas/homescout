@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Filters from './Filter/Filters'
 import Navbar from './Navbar'
 import PropertiesBar from './PropertiesBar'
@@ -9,12 +9,15 @@ import Property from './Property';
 import { useQuery } from "react-query"
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setPropertyCount } from './features/countSlice';
 
 
 
 function Properties() {
     const [checkedList, setCheckedList] = useState("Relevance")
 
+    const dispath = useDispatch()
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const city = queryParams.get("city");
@@ -22,6 +25,7 @@ function Properties() {
     const bedrooms = queryParams.get("bedrooms");
 
     const options = ['Relevance', 'Posted On (Recent first)', 'Posted On (Oldest first)', 'Price (High to Low)', 'Price (Low to High)']
+
 
     const fetchProperties = () => {
         try {
@@ -39,11 +43,16 @@ function Properties() {
         } catch (error) {
             throw new Error(error.response.data.message || 'Failed to fetch properties');
         }
-
-
     }
 
     const { isLoading, data, isError, error } = useQuery(['properties', city], fetchProperties, { refetchOnWindowFocus: true })
+
+
+    useEffect(() => {
+        if (data && data.data) {
+            dispath(setPropertyCount(data.data.length));
+        }
+    }, [data])
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -53,8 +62,6 @@ function Properties() {
     if (isError) {
         return <div>{error.message}</div>
     }
-
-    console.log(city)
 
 
     const menu = (
@@ -66,6 +73,7 @@ function Properties() {
             ))}
         </div>
     );
+
     return (
         <div>
             <Navbar />
@@ -73,7 +81,7 @@ function Properties() {
             <Filters />
             <div className='properties-container'>
                 <div className='properties-sort-container'>
-                    <span>249 - Apartments, Flats For Rent In Kochi</span>
+                    <span>{data?.data.length} - Apartments, Flats For Rent {city && `In ${city}`}</span>
                     <div className='properties-sort-button'>
                         <span>Sort by: </span>
                         <Dropdown overlay={menu} trigger={['click']}>

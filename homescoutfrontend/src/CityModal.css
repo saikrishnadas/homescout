@@ -1,0 +1,50 @@
+.icons-container {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.icon-image-container {
+	width: 50px;
+	height: 50px;
+}
+
+.icon-text {
+	color: grey;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.icon-text:hover {
+	color: black;
+	cursor: pointer;
+}
+
+.other-cities-button {
+	color: #37a5a9b2;
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+.other-cities-button:hover {
+	color: #37a5a9;
+}
+
+.other-cities-container {
+	display: grid;
+	grid-template-columns: auto auto auto auto;
+}
+
+.other-city {
+	color: grey;
+	cursor: pointer;
+}
+
+.other-city:hover {
+	color: black;
+}

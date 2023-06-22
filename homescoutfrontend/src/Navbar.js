@@ -8,6 +8,9 @@ import "./Navbar.css";
 import { Button, Dropdown, Space, Menu } from "antd";
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from 'react-router-dom';
+import CityModal from "./CityModal";
+import PostPropertyModal from "./PostPropertyModal";
+
 
 
 const cities = [
@@ -53,6 +56,7 @@ function Navbar() {
     const queryCity = queryParams.get('city');
     const [search, setSearch] = useState("")
 
+
     const items = cities.map((city, index) => ({
         key: (index + 1).toString(),
         label: (
@@ -82,6 +86,8 @@ function Navbar() {
         <div
             className="navbar-container"
         >
+            <CityModal />
+            <PostPropertyModal />
             <div className="navbar-left">
                 <div>
                     <GoThreeBars style={{ color: "white", fontSize: "30px" }} />

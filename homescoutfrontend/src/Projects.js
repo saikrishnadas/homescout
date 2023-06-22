@@ -48,7 +48,7 @@ function Projects() {
             <Filters />
             <div className='properties-container'>
                 <div className='properties-sort-container'>
-                    <span>14 - Projects In Kochi</span>
+                    <span>0 - Projects</span>
                     <div className='properties-sort-button'>
                         <span>Sort by: </span>
                         <Dropdown overlay={menu} trigger={['click']}>
