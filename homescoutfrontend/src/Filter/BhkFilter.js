@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { Dropdown, Checkbox, Button } from 'antd';
 import { AiOutlineCaretDown } from "react-icons/ai";
 import "./Filters.css"
+import { useDispatch } from "react-redux"
+import { setBhkFilter } from "../features/filterSilce"
 
 
 function BhkFilter() {
     const [checkedList, setCheckedList] = useState([]);
     const options = ['1BHK', '2BHK', '3BHK', '4BHK', '5BHK']
+    const dispatch = useDispatch()
 
     const handleMenuClick = (e) => {
         const { value, checked } = e.target;
@@ -15,6 +18,7 @@ function BhkFilter() {
             : checkedList.filter((item) => item !== value);
 
         setCheckedList(updatedList);
+        dispatch(setBhkFilter(updatedList))
     };
 
     const menu = (

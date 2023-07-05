@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { Dropdown, Checkbox, Button } from 'antd';
 import { AiOutlineCaretDown } from "react-icons/ai";
 import "./Filters.css"
+import { useDispatch } from "react-redux"
+import { setTypeFilter } from "../features/filterSilce"
+
 
 
 function PropertyFilter() {
     const [checkedList, setCheckedList] = useState([]);
     const options = ['Apartment', 'Villa', 'Builder Floor'];
+    const dispatch = useDispatch()
 
     const handleMenuClick = (e) => {
         const { value, checked } = e.target;
@@ -15,6 +19,7 @@ function PropertyFilter() {
             : checkedList.filter((item) => item !== value);
 
         setCheckedList(updatedList);
+        dispatch(setTypeFilter(updatedList))
     };
 
     const menu = (

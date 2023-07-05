@@ -10,6 +10,10 @@ import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from 'react-router-dom';
 import CityModal from "./CityModal";
 import PostPropertyModal from "./PostPropertyModal";
+import { useDispatch } from "react-redux"
+import { setIsOpen } from './features/postPropertySlice';
+
+
 
 
 
@@ -55,6 +59,8 @@ function Navbar() {
     const queryParams = new URLSearchParams(location.search);
     const queryCity = queryParams.get('city');
     const [search, setSearch] = useState("")
+
+    const dispatch = useDispatch()
 
 
     const items = cities.map((city, index) => ({
@@ -123,6 +129,7 @@ function Navbar() {
                     </div>
                     <div
                         className="post-property-botton"
+                        onClick={() => dispatch(setIsOpen(true))}
                     >
                         <span
                             className="post-property-botton-text"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal, Button, Dropdown, Space, Menu } from "antd";
+import { Modal, Button, Dropdown, Space, Menu, Input } from "antd";
 import "./PostPropertyModal.css"
 import { useNavigate } from 'react-router-dom';
 import {
@@ -8,6 +8,13 @@ import {
     GoTriangleDown,
     GoPerson,
 } from "react-icons/go";
+import { useSelector, useDispatch } from 'react-redux';
+import { setIsOpen } from './features/postPropertySlice';
+import { useMutation } from "react-query"
+import axios from 'axios';
+
+
+const { TextArea } = Input
 
 
 const cities = [
@@ -46,11 +53,30 @@ const cities = [
 
 function PostPropertyModal() {
     const naviagte = useNavigate()
-    const [isModalOpen, setIsModalOpen] = useState(true);
+    const isModalOpen = useSelector((state) => state.postProperty.isOpen)
+    // const [isModalOpen, setIsModalOpen] = useState(true);
     const [type, setType] = useState("rent")
     const [propertyType, setPropertyType] = useState("")
     const [unit, setUnit] = useState("")
     const [city, setCity] = useState("")
+    const [location, setLocation] = useState("")
+    const [builduparea, setBuilduparea] = useState("")
+    const [carpetarea, setCarpetarea] = useState("")
+    const [rent, setRent] = useState("")
+    const [deposit, setDeposit] = useState("")
+    const [desc, setDesc] = useState("")
+    const [bath, setBath] = useState("")
+
+    const dispatch = useDispatch()
+
+    const addProperty = (data) => {
+        return axios.post(`http://127.0.0.1:8000/api/properties/create/`, data)
+    }
+
+    const { mutate: addProp } = useMutation(addProperty)
+
+
+
 
     const items = cities.map((city, index) => ({
         key: (index + 1).toString(),
@@ -75,15 +101,30 @@ function PostPropertyModal() {
 
 
     const showModal = () => {
-        setIsModalOpen(true);
+        dispatch(setIsOpen(true))
     };
 
     const handleOk = () => {
-        setIsModalOpen(false);
+        const data = {
+            type: type,
+            propertyType: propertyType,
+            city: city,
+            location: location,
+            unit: unit,
+            builduparea: builduparea,
+            carpetarea: carpetarea,
+            rent: rent,
+            deposit: deposit,
+            desc: desc,
+            bath: bath
+        }
+        console.log(data)
+        addProp(data)
+        dispatch(setIsOpen(false))
     };
 
     const handleCancel = () => {
-        setIsModalOpen(false);
+        dispatch(setIsOpen(false))
     };
 
     return (
@@ -127,7 +168,7 @@ function PostPropertyModal() {
                     </div>
                     <div style={{ display: "flex", flexDirection: "column" }}>
                         <div className='label'>Location*</div>
-                        <input placeholder='location' />
+                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter the location' onChange={(e) => setLocation(e.target.value)} />
                     </div>
                 </div>
                 <div className='label'>Unit Type*</div>
@@ -141,35 +182,47 @@ function PostPropertyModal() {
                 <div style={{ display: "flex", gap: "10px" }}>
                     <div style={{ display: "flex", flexDirection: "column" }}>
                         <div className='label'>Build up area*</div>
-                        <input placeholder='Build up area' />
+                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter build up area' onChange={(e) => setBuilduparea(e.target.value)} />
+
                     </div>
                     <div style={{ display: "flex", flexDirection: "column" }}>
                         <div className='label'>Carpet area*</div>
-                        <input placeholder='Carpet area' />
+                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter carpet area' onChange={(e) => setCarpetarea(e.target.value)} />
                     </div>
                 </div>
                 <div className='sub-sub-title'>Property Price</div>
                 <div style={{ display: "flex", gap: "10px" }}>
                     <div style={{ display: "flex", flexDirection: "column" }}>
                         <div className='label'>Rent*</div>
-                        <input placeholder='Rent' />
+                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter the rent' onChange={(e) => setRent(e.target.value)} />
                     </div>
                     <div style={{ display: "flex", flexDirection: "column" }}>
                         <div className='label'>Deposit*</div>
-                        <input placeholder='Deposit' />
+                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter the deposit' onChange={(e) => setDeposit(e.target.value)} />
                     </div>
                 </div>
                 <div className='sub-sub-title'>More information of your property </div>
                 <div className='label'>Property Description*</div>
-                <input placeholder='Property Description' />
-                <div className='label'>Unit Type*</div>
+                <TextArea style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter property description' onChange={(e) => setDesc(e.target.value)} />
+                <div className='label'>No of Bathrooms*</div>
                 <div className="option-button-container">
-                    <div className={unit === "1bhk" ? "option-button-selected" : "option-button"} onClick={() => setUnit("1bhk")}><span>1BHK</span></div>
-                    <div className={unit === "2bhk" ? "option-button-selected" : "option-button"} onClick={() => setUnit("2bhk")}><span>2BHK</span></div>
-                    <div className={unit === "3bhk" ? "option-button-selected" : "option-button"} onClick={() => setUnit("3bhk")}><span>3BHK</span></div>
-                    <div className={unit === "4bhk" ? "option-button-selected" : "option-button"} onClick={() => setUnit("4bhk")}><span>4BHK</span></div>
-                    <div className={unit === "5bhk" ? "option-button-selected" : "option-button"} onClick={() => setUnit("5bhk")}><span>5BHK</span></div>
+                    <div className={bath === "1bath" ? "option-button-selected" : "option-button"} onClick={() => setBath("1bath")}><span>1BATH</span></div>
+                    <div className={bath === "2bath" ? "option-button-selected" : "option-button"} onClick={() => setBath("2bath")}><span>2BATH</span></div>
+                    <div className={bath === "3bath" ? "option-button-selected" : "option-button"} onClick={() => setBath("3bath")}><span>3BATH</span></div>
+                    <div className={bath === "4bath" ? "option-button-selected" : "option-button"} onClick={() => setBath("4bath")}><span>4BATH</span></div>
+                    <div className={bath === "5bath" ? "option-button-selected" : "option-button"} onClick={() => setBath("5bath")}><span>5BATH</span></div>
                 </div>
+                <div style={{ marginTop: "20px", display: "flex", justifyContent: "end" }}><div
+                    className="post-property-botton"
+                    onClick={handleOk}
+                >
+                    <span
+                        className="post-property-botton-text"
+                    >
+                        POST PROPERTY
+                    </span>
+                </div></div>
+
             </>
         </Modal>
     )
