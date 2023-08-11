@@ -9,4 +9,4 @@ export const corsOptions = {
         }
     },
     optionsSuccessStatus: 200
-}
+};

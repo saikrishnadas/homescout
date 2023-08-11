@@ -8,16 +8,16 @@ import multer from "multer";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+import cookieParser from "cookie-parser";
 import { connectDB } from "./config/dbConn.js"
 import { credentials } from "./middleware/credentials.js";
 import { corsOptions } from "./config/corsOptions.js";
-import cookieParser from "cookie-parser";
 
 import propertyRoute from "./routes/properties.js";
 import { register } from "./controllers/auth.js";
 
 dotenv.config();
-app = express();
+const app = express();
 const PORT = process.env.PORT || 6001;
 
 // Connect to mongoDB
@@ -34,8 +34,8 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement
-app.use(credentials);
-app.use(cors(corsOptions));
+// app.use(credentials);
+// app.use(cors(corsOptions));
 app.use(cookieParser);
 app.use("/assets", express.static(path.join(__dirname, "public/assets")))
 
