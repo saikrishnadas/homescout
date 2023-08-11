@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux"
-import { logout } from "./features/auth/authSlice"
+import { logOut } from "./features/auth/authSlice"
 import { useNavigate } from "react-router-dom";
 
 function HomePage() {
@@ -7,7 +7,7 @@ function HomePage() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        dispatch(logout())
+        dispatch(logOut())
         navigate("/login")
     }
 

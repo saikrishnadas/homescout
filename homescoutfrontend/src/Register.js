@@ -26,7 +26,7 @@ function RegisterPage() {
                 })
                 console.log(response)
                 const { access, refresh } = response?.data
-                dispatch(login({ accessToken: access, refreshToken: refresh }))
+                // dispatch(login({ accessToken: access, refreshToken: refresh }))
                 localStorage.setItem('authTokens', JSON.stringify(response?.data));
                 navigate("/home");
             } catch (error) {

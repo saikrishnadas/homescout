@@ -1,8 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './store';
-import PrivateRoute from './utils/PrivateRoute';
+import { Route, Routes } from 'react-router-dom';
 import LoginPage from './Login';
 import RegisterPage from './Register';
 import HomePage from './HomePage';
@@ -11,6 +8,9 @@ import Detail from './Detail';
 import { QueryClientProvider, QueryClient } from "react-query"
 import { ReactQueryDevtools } from "react-query/devtools"
 import Projects from './Projects';
+import RequireAuth from './features/auth/RequireAuth';
+import Layout from "./components/Layout"
+import Pro from './components/Pro';
 
 function Test() {
   return (
@@ -20,35 +20,30 @@ function Test() {
   )
 }
 
-
-
 function App() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Test />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/properties" element={<Properties />} />
-            <Route path="/properties/:id" element={<Detail />} />
-            <Route
-              path="/home"
-              element={
-                <PrivateRoute>
-                  <HomePage />
-                </PrivateRoute>
-              }
-            />
-          </Routes>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          {/* Public Routes */}
+          <Route index element={<Test />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="pro" element={<Pro />} />
+          <Route path="properties" element={<Properties />} />
+          <Route path="properties/:id" element={<Detail />} />
 
-        </Router>
-      </Provider>
+          {/* Protected Routes */}
+          <Route element={<RequireAuth />}>
+            <Route path="home" element={<HomePage />} />
+          </Route>
+        </Route>
+      </Routes>
+
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-    </QueryClientProvider>
+    </QueryClientProvider >
 
   );
 }
