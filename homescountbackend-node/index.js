@@ -13,8 +13,9 @@ import { connectDB } from "./config/dbConn.js"
 import { credentials } from "./middleware/credentials.js";
 import { corsOptions } from "./config/corsOptions.js";
 
-import propertyRoute from "./routes/properties.js";
 import { register } from "./controllers/auth.js";
+import propertyRoute from "./routes/properties.js";
+import authRoute from "./routes/auth.js";
 
 dotenv.config();
 const app = express();
@@ -54,8 +55,8 @@ const upload = multer({ storage });
 app.post("/api/auth/register", upload.single("picture"), register);
 
 // Routes
-app.use("/api/properties", propertyRoute)
-
+app.use("/api/auth", authRoute);
+app.use("/api/properties", propertyRoute);
 
 
 mongoose.connection.once('open', () => {
