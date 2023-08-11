@@ -23,20 +23,20 @@ const PORT = process.env.PORT || 6001;
 // Connect to mongoDB
 connectDB()
 
-// Configurations
+// CONFIGURATIONS
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-app.use(morgan("common"));
+app.use(morgan("common"))
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement
-// app.use(credentials);
-// app.use(cors(corsOptions));
-app.use(cookieParser);
+app.use(credentials);
+app.use(cors(corsOptions));
+app.use(cookieParser())
 app.use("/assets", express.static(path.join(__dirname, "public/assets")))
 
 //File Storage

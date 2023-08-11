@@ -3,11 +3,12 @@ import bcrypt from "bcrypt";
 
 export const register = async (req, res) => {
     try {
+
         const { firstName, lastName, email, password, phoneNumber, picturePath } = req.body;
 
         //Check if user exists
         const duplicate = await User.findOne({ email: email }).exec();
-        if (duplicate) res.send(409).json({ message: "User already Exists" });
+        if (duplicate) res.sendStatus(409);
 
         //Hash the password
         const salt = await bcrypt.genSalt();
@@ -24,9 +25,8 @@ export const register = async (req, res) => {
             updatedAt: Date.now()
         });
         await newUser.save();
-        res.send(201).json({ message: `User with email ${email} is created` })
-
-    } catch (err) {
+        res.status(201).json({ message: `User with email ${email} is created` })
+    } catch (error) {
         res.status(500).json({ error: error.message })
     }
 }
