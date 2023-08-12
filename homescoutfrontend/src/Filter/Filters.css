@@ -1,0 +1,119 @@
+.filters-container {
+	background-color: white;
+	box-shadow: 1px 1px 10px grey;
+	height: 60px;
+	padding-left: 10%;
+	padding-right: 10%;
+	display: flex;
+	/* justify-content: space-between; */
+	gap: 10px;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.filter-dropdown-button {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	background-color: white;
+	width: 200px;
+	height: 40px;
+	justify-content: space-around;
+	box-shadow: 1px 2px 4px #8888888e;
+	cursor: pointer;
+	color: rgba(128, 128, 128, 0.741);
+}
+
+.dropdown-menu-options {
+	display: flex;
+	flex-direction: column;
+	user-select: none;
+}
+
+.dropdown-menu-options-item {
+	padding: 10px 0 10px 5px;
+	background-color: white;
+	border: 0.5px solid rgba(128, 128, 128, 0.499);
+}
+.dropdown-menu-options-item:hover {
+	border-bottom: 2px solid #37a5a9;
+}
+.dropdown-menu .ant-checkbox-wrapper:hover .ant-checkbox-inner {
+	border-color: #37a5a9;
+}
+
+.dropdown-menu-options-item .ant-checkbox-inner {
+	border-color: #37a5a9;
+}
+
+.dropdown-menu-options-item .ant-checkbox-checked .ant-checkbox-inner {
+	background-color: #37a5a9;
+}
+
+.budget-input {
+	width: 90px;
+	height: 30px;
+	border-color: rgba(128, 128, 128, 0.164);
+}
+
+.budget-input:focus {
+	outline-color: #37a5a9;
+}
+
+.filter-dropdown-button:hover {
+	border-bottom: 2px solid #37a5a9;
+}
+
+.apply-filter-botton {
+	display: flex;
+	align-items: center;
+	background-color: #37a5a9;
+	width: 100px;
+	height: 40px;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.apply-filter-botton:hover {
+	display: flex;
+	align-items: center;
+	background-color: #37a5a9e2;
+	width: 100px;
+	height: 40px;
+	justify-content: center;
+}
+
+.apply-filter-botton-text {
+	font-size: 14px;
+	color: white;
+	font-weight: bold;
+	user-select: none;
+}
+
+.reset-filter-botton {
+	display: flex;
+	align-items: center;
+	background-color: white;
+	width: 100px;
+	height: 40px;
+	justify-content: center;
+	border: 1px solid #37a5a9e2;
+	cursor: pointer;
+}
+
+.reset-filter-botton:hover {
+	display: flex;
+	align-items: center;
+	width: 100px;
+	height: 40px;
+	justify-content: center;
+	border: 1px solid #37a5a927;
+	background-color: #37a5a927;
+}
+
+.reset-filter-botton-text {
+	font-size: 14px;
+	color: black;
+	font-weight: bold;
+	user-select: none;
+}
