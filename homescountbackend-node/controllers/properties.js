@@ -37,3 +37,14 @@ export const createProperty = async (req, res) => {
         res.status(500).json({ error: error.message })
     }
 }
+
+
+export const getProperty = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const property = await Property.findOne({ _id: id });
+        res.status(200).json(property);
+    } catch (err) {
+        res.status(404).json({ message: err.message })
+    }
+}
