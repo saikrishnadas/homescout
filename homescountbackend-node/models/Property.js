@@ -33,7 +33,8 @@ const propertySchema = new mongoose.Schema({
     },
     listedBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User' // Referencing User documents
+        ref: 'User', // Referencing User documents,
+        default: null
     },
     propertyOn: {
         type: String,

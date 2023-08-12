@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setPropertyCount } from './features/countSlice';
+import { useGetPropertiesQuery } from './features/propertiesSlice';
 
 
 
@@ -26,31 +27,32 @@ function Properties() {
 
     const options = ['Relevance', 'Posted On (Recent first)', 'Posted On (Oldest first)', 'Price (High to Low)', 'Price (Low to High)']
 
+    const { data, isLoading, isError, error } = useGetPropertiesQuery();
 
-    const fetchProperties = () => {
-        try {
-            let url = 'http://127.0.0.1:8000/api/properties/filter/';
-            if (city) {
-                url += `?city=${city.toLowerCase()}`;
-            }
-            if (title) {
-                url += city ? `&title=${title.toLowerCase()}` : `?title=${title.toLowerCase()}`;
-            }
-            if (!city && !title) {
-                url = "http://127.0.0.1:8000/api/properties"
-            }
-            return axios.get(url)
-        } catch (error) {
-            throw new Error(error.response.data.message || 'Failed to fetch properties');
-        }
-    }
+    // const fetchProperties = () => {
+    //     try {
+    //         let url = 'http://127.0.0.1:8000/api/properties/filter/';
+    //         if (city) {
+    //             url += `?city=${city.toLowerCase()}`;
+    //         }
+    //         if (title) {
+    //             url += city ? `&title=${title.toLowerCase()}` : `?title=${title.toLowerCase()}`;
+    //         }
+    //         if (!city && !title) {
+    //             url = "http://127.0.0.1:8000/api/properties"
+    //         }
+    //         return axios.get(url)
+    //     } catch (error) {
+    //         throw new Error(error.response.data.message || 'Failed to fetch properties');
+    //     }
+    // }
 
-    const { isLoading, data, isError, error } = useQuery(['properties', city], fetchProperties, { refetchOnWindowFocus: true })
+    // const { isLoading, data, isError, error } = useQuery(['properties', city], fetchProperties, { refetchOnWindowFocus: true })
 
 
     useEffect(() => {
-        if (data && data.data) {
-            dispath(setPropertyCount(data.data.length));
+        if (data) {
+            dispath(setPropertyCount(data?.length));
         }
     }, [data])
 
@@ -81,7 +83,7 @@ function Properties() {
             <Filters />
             <div className='properties-container'>
                 <div className='properties-sort-container'>
-                    <span>{data?.data.length} - Apartments, Flats For Rent {city && `In ${city}`}</span>
+                    <span>{data?.length} - Apartments, Flats For Rent {city && `In ${city}`}</span>
                     <div className='properties-sort-button'>
                         <span>Sort by: </span>
                         <Dropdown overlay={menu} trigger={['click']}>
@@ -92,10 +94,10 @@ function Properties() {
                     </div>
                 </div>
                 <div style={{ marginTop: "10px", marginBottom: "10px", display: "flex", flexDirection: "column", gap: "10px" }}>
-                    {data?.data.map((property) => (
+                    {data?.map((property) => (
 
-                        <Property key={property.id}
-                            id={property.id}
+                        <Property key={property._id}
+                            id={property._id}
                             title={property.title}
                             rent={property.rent}
                             carpetArea={property.carpet_area}
