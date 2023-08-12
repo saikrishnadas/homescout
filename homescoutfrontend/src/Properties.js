@@ -29,6 +29,8 @@ function Properties() {
 
     const { data, isLoading, isError, error } = useGetPropertiesQuery();
 
+
+
     // const fetchProperties = () => {
     //     try {
     //         let url = 'http://127.0.0.1:8000/api/properties/filter/';

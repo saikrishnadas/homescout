@@ -25,8 +25,14 @@ export const propertiesSlice = apiSlice.injectEndpoints({
         }),
         getProperty: builder.query({
             query: (id) => `/api/properties/${id}`
+        }),
+        getFilterProperties: builder.query({
+            query: queryParams => ({
+                url: '/api/properties/filter',
+                params: queryParams,
+            })
         })
     })
 })
 
-export const { useGetPropertiesQuery, useGetPropertyQuery } = propertiesSlice;
+export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery } = propertiesSlice;

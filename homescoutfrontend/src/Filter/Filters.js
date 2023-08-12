@@ -7,13 +7,26 @@ import BhkFilter from './BhkFilter';
 import BudgetFilter from './BudgetFilter';
 import BrokerageFilter from './BrokerageFilter';
 import CarpetFilter from './CarpetFilter';
-import { useDispatch } from "react-redux"
-import { setTypeFilter, setBhkFilter, setBudgetFilter, setCarpetAreaFilter } from '../features/filterSilce';
+import { useDispatch, useSelector } from "react-redux"
+import { setTypeFilter, setBhkFilter, setBudgetFilter, setCarpetAreaFilter, selectBhk } from '../features/filterSilce';
+import { useGetFilterPropertiesQuery } from '../features/propertiesSlice';
 
 
 
 function Filters() {
     const dispatch = useDispatch()
+    const bhk = useSelector(selectBhk)
+    const queryParams = {
+        city: "kochi",
+        bedrooms: 2,
+        bathrooms: 2
+    };
+
+    const { data: properties, error, isLoading } = useGetFilterPropertiesQuery(queryParams);
+
+    const handleFilter = () => {
+        console.log(properties)
+    }
 
     const handleReset = () => {
         dispatch(setBhkFilter([]))
@@ -31,7 +44,7 @@ function Filters() {
             <CarpetFilter />
             <div
                 className="apply-filter-botton"
-
+                onClick={handleFilter}
             >
                 <span
                     className="apply-filter-botton-text"

@@ -48,3 +48,39 @@ export const getProperty = async (req, res) => {
         res.status(404).json({ message: err.message })
     }
 }
+
+
+export const filterProperties = async (req, res) => {
+    try {
+        const { bedrooms, carpetArea, bathrooms, bachelorsAllowed, parking, petAllowed, city } = req.query;
+
+        // Build the filter object based on provided query parameters
+        let filters = {};
+        if (bedrooms) {
+            filters.bedrooms = bedrooms;
+        }
+        if (city) {
+            filters.city = city;
+        }
+        if (bathrooms) {
+            filters.bathrooms = bathrooms;
+        }
+        if (parking) {
+            filters.parking = parking === 'true'; // Convert the string to a boolean
+        }
+        if (carpetArea) {
+            filters.carpetArea = carpetArea;
+        }
+        if (bachelorsAllowed) {
+            filters.bachelorsAllowed = bachelorsAllowed === 'true'; // Convert the string to a boolean
+        }
+        if (petAllowed) {
+            filters.petAllowed = petAllowed === 'true'; // Convert the string to a boolean
+        }
+
+        const filteredProperties = await Property.find(filters)
+        res.status(200).json(filteredProperties);
+    } catch (error) {
+        res.status(404).json({ message: err.message })
+    }
+}

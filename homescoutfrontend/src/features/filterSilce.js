@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit"
 const filterSlice = createSlice({
     name: 'filter',
     initialState: {
-        type: [],
-        bhk: [],
+        type: undefined,
+        bhk: undefined,
         budget: { min: "", max: "" },
         carpetArea: { min: "", max: "" }
     },
@@ -27,3 +27,5 @@ const filterSlice = createSlice({
 export const { setTypeFilter, setBhkFilter, setBudgetFilter, setCarpetAreaFilter } = filterSlice.actions;
 
 export default filterSlice.reducer;
+
+export const selectBhk = (state) => state.filter.bhk;
