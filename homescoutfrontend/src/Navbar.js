@@ -10,8 +10,9 @@ import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from 'react-router-dom';
 import CityModal from "./CityModal";
 import PostPropertyModal from "./PostPropertyModal";
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { setIsOpen } from './features/postPropertySlice';
+import { selectCurrentUser } from "./features/auth/authSlice";
 
 
 
@@ -61,6 +62,8 @@ function Navbar() {
     const [search, setSearch] = useState("")
 
     const dispatch = useDispatch()
+    // const user = useSelector(selectCurrentUser)
+    const user = localStorage.getItem("user") ? localStorage.getItem("user") : null;
 
 
     const items = cities.map((city, index) => ({
@@ -127,7 +130,7 @@ function Navbar() {
                     <div>
                         <GoPerson style={{ color: "white", fontSize: "24px" }} />
                     </div>
-                    <div
+                    {user && <div
                         className="post-property-botton"
                         onClick={() => dispatch(setIsOpen(true))}
                     >
@@ -136,7 +139,8 @@ function Navbar() {
                         >
                             POST PROPERTY
                         </span>
-                    </div>
+                    </div>}
+
                 </div>
             </div>
         </div>

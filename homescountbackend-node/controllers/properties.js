@@ -11,9 +11,10 @@ export const getAllProperties = async (req, res) => {
 
 export const createProperty = async (req, res) => {
     try {
-        const { title, rent, buildUpArea, carpetArea, bedrooms, bathrooms, parking, listedBy, bachelorsAllowed, securityDeposit, petAllowed, nonVegetarian, propertyDescription, city, state, country, location } = req.body;
+        const { title, propertyType, rent, buildUpArea, carpetArea, bedrooms, bathrooms, parking, listedBy, bachelorsAllowed, securityDeposit, petAllowed, nonVegetarian, propertyDescription, city, state, country, location } = req.body;
         const newProperty = new Property({
             title,
+            propertyType,
             rent,
             buildUpArea,
             carpetArea,
@@ -82,5 +83,16 @@ export const filterProperties = async (req, res) => {
         res.status(200).json(filteredProperties);
     } catch (error) {
         res.status(404).json({ message: err.message })
+    }
+}
+
+export const updatePropertyType = async (req, res) => {
+    try {
+        // Update all documents with the new field and value
+        await Property.updateMany({}, { $set: { propertyFor: 'rent' } });
+
+        return res.status(200).json({ message: 'Property fpr updated for all documents.' });
+    } catch (error) {
+        return res.status(500).json({ error: 'An error occurred while updating property for.' });
     }
 }

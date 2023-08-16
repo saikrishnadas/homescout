@@ -31,8 +31,18 @@ export const propertiesSlice = apiSlice.injectEndpoints({
                 url: '/api/properties/filter',
                 params: queryParams,
             })
+        }),
+        updatePropertiesType: builder.query({
+            query: () => "/api/properties/updatePropertyType"
+        }),
+        createProperty: builder.mutation({
+            query: propertyData => ({
+                url: '/api/properties/create',
+                method: 'POST',
+                body: propertyData
+            })
         })
     })
 })
 
-export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery } = propertiesSlice;
+export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery, useCreatePropertyMutation } = propertiesSlice;

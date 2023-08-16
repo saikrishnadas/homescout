@@ -11,7 +11,7 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setPropertyCount } from './features/countSlice';
-import { useGetPropertiesQuery } from './features/propertiesSlice';
+import { useGetPropertiesQuery, useUpdatePropertiesTypeQuery } from './features/propertiesSlice';
 
 
 
@@ -28,7 +28,7 @@ function Properties() {
     const options = ['Relevance', 'Posted On (Recent first)', 'Posted On (Oldest first)', 'Price (High to Low)', 'Price (Low to High)']
 
     const { data, isLoading, isError, error } = useGetPropertiesQuery();
-
+    // const { data: test } = useUpdatePropertiesTypeQuery();
 
 
     // const fetchProperties = () => {
