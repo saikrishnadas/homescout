@@ -41,8 +41,15 @@ export const propertiesSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: propertyData
             })
+        }),
+        updateProperty: builder.mutation({
+            query: (id, updatedData) => ({
+                url: `/api/properties/update/${id}`,
+                method: 'POST',
+                body: updatedData
+            })
         })
     })
 })
 
-export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery, useCreatePropertyMutation } = propertiesSlice;
+export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery, useCreatePropertyMutation, useUpdatePropertyMutation } = propertiesSlice;

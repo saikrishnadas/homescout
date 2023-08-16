@@ -96,3 +96,35 @@ export const updatePropertyType = async (req, res) => {
         return res.status(500).json({ error: 'An error occurred while updating property for.' });
     }
 }
+
+export const updateProperty = async (req, res) => {
+    try {
+        const { title, propertyType, rent, buildUpArea, carpetArea, bedrooms, bathrooms, parking, listedBy, bachelorsAllowed, securityDeposit, petAllowed, nonVegetarian, propertyDescription, city, state, country, location } = req.body;
+        const { id } = req.params;
+        const updatedProperty = {
+            title,
+            propertyType,
+            rent,
+            buildUpArea,
+            carpetArea,
+            bedrooms,
+            bathrooms,
+            parking,
+            listedBy,
+            bachelorsAllowed,
+            securityDeposit,
+            petAllowed,
+            nonVegetarian,
+            propertyDescription,
+            city,
+            state,
+            country,
+            location
+        }
+        const updatedData = await Property.findByIdAndUpdate(id, updatedProperty, { new: true })
+        res.status(200).json(updatedData)
+
+    } catch (error) {
+        return res.status(500).json({ error: 'An error occurred while updating property for.', message: error.message });
+    }
+}
