@@ -9,11 +9,11 @@ import {
     GoPerson,
 } from "react-icons/go";
 import { useSelector, useDispatch } from 'react-redux';
-import { setIsOpen } from './features/postPropertySlice';
 import { useMutation } from "react-query"
 import axios from 'axios';
 import { useUpdatePropertyMutation } from './features/propertiesSlice';
 import { useEffect } from 'react';
+import { setIsOpenUpdate } from './features/updatePropertySlice';
 
 
 const { TextArea } = Input
@@ -55,8 +55,8 @@ const cities = [
 
 function UpdatePropertyModal({ data }) {
     const naviagte = useNavigate()
-    // const isModalOpen = useSelector((state) => state.postProperty.isOpen)
-    const [isModalOpen, setIsModalOpen] = useState(true);
+    const isModalOpen = useSelector((state) => state.updateProperty.isOpenUpdate)
+    // const [isModalOpen, setIsModalOpen] = useState(true);
     const [type, setType] = useState("rent")
     const [title, setTitle] = useState(data?.title)
     const [propertyType, setPropertyType] = useState(data?.propertyType)
@@ -99,7 +99,7 @@ function UpdatePropertyModal({ data }) {
 
 
     const showModal = () => {
-        dispatch(setIsOpen(true))
+        dispatch(setIsOpenUpdate(true))
     };
 
     const handleOk = async () => {
@@ -122,7 +122,7 @@ function UpdatePropertyModal({ data }) {
             console.log(updatedData)
             const response = await updateProperty(id, updatedData);
             console.log(response)
-            dispatch(setIsOpen(false))
+            dispatch(setIsOpenUpdate(false))
         } catch (error) {
             console.log(error?.message)
             console.log(updateError)
@@ -130,7 +130,7 @@ function UpdatePropertyModal({ data }) {
     };
 
     const handleCancel = () => {
-        dispatch(setIsOpen(false))
+        dispatch(setIsOpenUpdate(false))
     };
 
     return (

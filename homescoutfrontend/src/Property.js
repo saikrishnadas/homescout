@@ -2,12 +2,21 @@ import moment from 'moment'
 import React from 'react'
 import "./Property.css"
 import { useNavigate } from "react-router-dom"
+import {
+    AiFillDelete,
+} from "react-icons/ai";
+import { useDeletePropertyMutation } from './features/propertiesSlice';
 
 function Property({ id, title, rent, carpetArea, bedrooms, bathrooms, parking, propertyDescription, listedBy, listedOn }) {
     const navigate = useNavigate();
 
+    const [deleteProperty, { isLoading, isError, error }] = useDeletePropertyMutation(id);
+
     const handleNavigation = () => {
         navigate("/properties/" + id)
+    }
+    const handleDeleteProperty = async () => {
+        await deleteProperty(id);
     }
     return (
         <div className='property-container' onClick={handleNavigation}>
@@ -18,7 +27,7 @@ function Property({ id, title, rent, carpetArea, bedrooms, bathrooms, parking, p
                 </div>
                 <div className='top-details'>
                     <div className='top-title'>
-                        <span style={{ fontWeight: "bold" }}>{title}</span>
+                        <span style={{ display: "flex", alignItems: "center" }}><span style={{ fontWeight: "bold" }}>{title}</span>{" "}<span style={{ marginLeft: "10px" }} onClick={handleDeleteProperty}><AiFillDelete /></span></span>
                         <span style={{ fontWeight: "bold", fontSize: "24px" }}>₹ {rent}</span>
                     </div>
                     <div className='top-carpet'>

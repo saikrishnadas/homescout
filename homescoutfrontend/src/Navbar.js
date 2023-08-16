@@ -7,12 +7,13 @@ import {
 import "./Navbar.css";
 import { Button, Dropdown, Space, Menu } from "antd";
 import { useEffect, useState } from "react"
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import CityModal from "./CityModal";
 import PostPropertyModal from "./PostPropertyModal";
 import { useDispatch, useSelector } from "react-redux"
 import { setIsOpen } from './features/postPropertySlice';
 import { selectCurrentUser } from "./features/auth/authSlice";
+import { setIsOpenUpdate } from "./features/updatePropertySlice";
 
 
 
@@ -60,6 +61,7 @@ function Navbar() {
     const queryParams = new URLSearchParams(location.search);
     const queryCity = queryParams.get('city');
     const [search, setSearch] = useState("")
+    const { id } = useParams();
 
     const dispatch = useDispatch()
     // const user = useSelector(selectCurrentUser)
@@ -140,7 +142,16 @@ function Navbar() {
                             POST PROPERTY
                         </span>
                     </div>}
-
+                    {user && id && <div
+                        className="post-property-botton"
+                        onClick={() => dispatch(setIsOpenUpdate(true))}
+                    >
+                        <span
+                            className="post-property-botton-text"
+                        >
+                            UPDATE PROPERTY
+                        </span>
+                    </div>}
                 </div>
             </div>
         </div>

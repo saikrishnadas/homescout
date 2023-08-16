@@ -15,7 +15,6 @@ import { useEffect } from 'react';
 
 function Detail() {
     const { id } = useParams();
-    const [isOpen, setIsOpen] = useState(false)
 
     const { data, isLoading, isError, error } = useGetPropertyQuery(id);
 
@@ -34,7 +33,7 @@ function Detail() {
     return (
         <div>
             <Navbar />
-            {isOpen && <UpdatePropertyModal data={data} />}
+            <UpdatePropertyModal data={data} />
 
             <div className='detail-container'>
                 {/* Parent DIV */}
@@ -45,7 +44,6 @@ function Detail() {
                             {/* Image */}
                         </div>
                         <div className='overview-right-detail'>
-                            <button onClick={() => setIsOpen(true)}>Update property</button>
                             {/* Right Detail */}
                             <div className='overview-title'>
                                 {/* Title */}

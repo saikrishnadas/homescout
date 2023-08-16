@@ -48,8 +48,14 @@ export const propertiesSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: updatedData
             })
+        }),
+        deleteProperty: builder.mutation({
+            query: (id) => ({
+                url: `/api/properties/delete/${id}`,
+                method: 'DELETE'
+            })
         })
     })
 })
 
-export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery, useCreatePropertyMutation, useUpdatePropertyMutation } = propertiesSlice;
+export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery, useCreatePropertyMutation, useUpdatePropertyMutation, useDeletePropertyMutation } = propertiesSlice;

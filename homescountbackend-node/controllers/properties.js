@@ -128,3 +128,13 @@ export const updateProperty = async (req, res) => {
         return res.status(500).json({ error: 'An error occurred while updating property for.', message: error.message });
     }
 }
+
+export const deleteProperty = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Property.findByIdAndDelete(id)
+        res.status(200).json({ message: "Property Deleted." })
+    } catch {
+        return res.status(500).json({ error: 'An error occurred while updating property for.' });
+    }
+} 
