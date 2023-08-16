@@ -28,6 +28,7 @@ function Properties() {
     const options = ['Relevance', 'Posted On (Recent first)', 'Posted On (Oldest first)', 'Price (High to Low)', 'Price (Low to High)']
 
     const { data, isLoading, isError, error } = useGetPropertiesQuery();
+
     // const { data: test } = useUpdatePropertiesTypeQuery();
 
 

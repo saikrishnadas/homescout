@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setIsOpen } from './features/postPropertySlice';
 import { useMutation } from "react-query"
 import axios from 'axios';
-import { useCreatePropertyMutation } from './features/propertiesSlice';
+import { useCreatePropertyMutation, useGetUserInfoQuery } from './features/propertiesSlice';
 
 
 const { TextArea } = Input
@@ -73,6 +73,9 @@ function PostPropertyModal() {
 
     const [createProperty, { isLoading, isError, error: createError }] = useCreatePropertyMutation();
 
+    const user = localStorage.getItem("user") ? localStorage.getItem("user") : null;
+    const { data: userInfo } = useGetUserInfoQuery(user);
+
     const items = cities.map((city, index) => ({
         key: (index + 1).toString(),
         label: (
@@ -113,7 +116,8 @@ function PostPropertyModal() {
                 rent: rent,
                 securityDeposit: deposit,
                 propertyDescription: desc,
-                bathrooms: bath
+                bathrooms: bath,
+                listedBy: userInfo?._id
             }
             console.log(data)
             const response = await createProperty(data);

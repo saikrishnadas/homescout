@@ -20,6 +20,9 @@ export const selectProperties = (state) => state.properties.properties;
 //Adding to the endpoints
 export const propertiesSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
+        getUserInfo: builder.query({
+            query: (email) => `/api/auth/getUserInfo/${email}`,
+        }),
         getProperties: builder.query({
             query: () => "/api/properties"
         }),
@@ -58,4 +61,4 @@ export const propertiesSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery, useCreatePropertyMutation, useUpdatePropertyMutation, useDeletePropertyMutation } = propertiesSlice;
+export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery, useCreatePropertyMutation, useUpdatePropertyMutation, useDeletePropertyMutation, useGetUserInfoQuery } = propertiesSlice;
