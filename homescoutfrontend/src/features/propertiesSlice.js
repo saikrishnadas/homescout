@@ -83,9 +83,10 @@ export const propertiesSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: { sortOption }
             })
-        })
+        }),
+        providesTags: (result, error, { sortOption }) => [{ type: 'PropertyData', sortOption }],
     })
 })
 
-export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery,
+export const { useGetPropertiesQuery, useGetPropertyQuery, useLazyGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery,
     useCreatePropertyMutation, useUpdatePropertyMutation, useDeletePropertyMutation, useGetUserInfoQuery, useGetCityFilterQuery, useGetPropertiesWithTitleQuery, useGetSortedPropertiesQuery } = propertiesSlice;

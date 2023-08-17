@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dropdown, Checkbox, Button } from 'antd';
+import { Dropdown, Radio, Button } from 'antd';
 import { AiOutlineCaretDown } from "react-icons/ai";
 import "./Filters.css"
 import { useDispatch } from "react-redux"
@@ -7,29 +7,25 @@ import { setBhkFilter } from "../features/filterSilce"
 
 
 function BhkFilter() {
-    const [checkedList, setCheckedList] = useState([]);
+    const [selectedOption, setSelectedOption] = useState(null);
     const options = ['1BHK', '2BHK', '3BHK', '4BHK', '5BHK']
     const dispatch = useDispatch()
 
     const handleMenuClick = (e) => {
-        const { value, checked } = e.target;
-        const updatedList = checked
-            ? [...checkedList, value]
-            : checkedList.filter((item) => item !== value);
-
-        setCheckedList(updatedList);
-        dispatch(setBhkFilter(updatedList))
+        const { value } = e.target;
+        setSelectedOption(value);
+        dispatch(setBhkFilter(parseInt(value.toLowerCase().replace("bhk", ""), 10)));
     };
 
     const menu = (
         <div className="dropdown-menu">
-            <Checkbox.Group value={checkedList} className="dropdown-menu-options">
+            <Radio.Group value={selectedOption} className="dropdown-menu-options">
                 {options.map((option) => (
-                    <Checkbox key={option} value={option} onChange={handleMenuClick} className="dropdown-menu-options-item" >
+                    <Radio key={option} value={option} onChange={handleMenuClick} className="dropdown-menu-options-item" >
                         {option}
-                    </Checkbox>
+                    </Radio>
                 ))}
-            </Checkbox.Group>
+            </Radio.Group>
         </div>
     );
 

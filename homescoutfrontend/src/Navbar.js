@@ -53,6 +53,11 @@ const cities = [
     "Visakhapatnam"
 ]
 
+const profile = [
+    "Logout",
+    "View Listings"
+]
+
 
 
 
@@ -79,6 +84,25 @@ function Navbar() {
             </div>
         ),
     }));
+
+    const profileItems = profile.map((k, index) => ({
+        key: (index + 1).toString(),
+        label: (
+            <div>
+                {k}
+            </div>
+        ),
+    }));
+
+    const profileMenu = (
+        <Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+            {profileItems.map((item) => (
+                <Menu.Item key={item.key} >
+                    {item.label}
+                </Menu.Item>
+            ))}
+        </Menu>
+    );
 
     const menu = (
         <Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
@@ -130,9 +154,31 @@ function Navbar() {
             </div>
             <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <div>
-                        <GoPerson style={{ color: "white", fontSize: "24px" }} />
-                    </div>
+                    {user ? <>                    <Dropdown trigger={["click"]} overlay={profileMenu} placement="bottomLeft">
+                        <div>
+                            <GoPerson style={{ color: "white", fontSize: "24px" }} />
+                        </div>
+                    </Dropdown></> : <div
+                        className="post-property-botton"
+                        onClick={() => naviagte('/login')}
+                    >
+                        <span
+                            className="post-property-botton-text"
+                        >
+                            LOGIN
+                        </span>
+                    </div>}
+                    {!user && <div
+                        className="post-property-botton"
+                        onClick={() => naviagte('/register')}
+                    >
+                        <span
+                            className="post-property-botton-text"
+                        >
+                            REGISTER
+                        </span>
+                    </div>}
+
                     {user && <div
                         className="post-property-botton"
                         onClick={() => dispatch(setIsOpen(true))}

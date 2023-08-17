@@ -62,10 +62,13 @@ export const getProperty = async (req, res) => {
 
 export const filterProperties = async (req, res) => {
     try {
-        const { bedrooms, carpetArea, bathrooms, bachelorsAllowed, parking, petAllowed, city, title } = req.query;
+        const { bedrooms, carpetArea, bathrooms, bachelorsAllowed, parking, petAllowed, city, title, type } = req.query;
 
         // Build the filter object based on provided query parameters
         let filters = {};
+        if (type) {
+            filters.type = type;
+        }
         if (bedrooms) {
             filters.bedrooms = bedrooms;
         }

@@ -8,24 +8,43 @@ import BudgetFilter from './BudgetFilter';
 import BrokerageFilter from './BrokerageFilter';
 import CarpetFilter from './CarpetFilter';
 import { useDispatch, useSelector } from "react-redux"
-import { setTypeFilter, setBhkFilter, setBudgetFilter, setCarpetAreaFilter, selectBhk } from '../features/filterSilce';
-import { useGetFilterPropertiesQuery } from '../features/propertiesSlice';
+import { useNavigate } from 'react-router-dom';
+import { setTypeFilter, setBhkFilter, setBudgetFilter, setCarpetAreaFilter, selectBhk, selectType } from '../features/filterSilce';
+import { setProperties, useGetFilterPropertiesQuery, useLazyGetFilterPropertiesQuery } from '../features/propertiesSlice';
 
 
 
 function Filters() {
     const dispatch = useDispatch()
+    const navigate = useNavigate();
     const bhk = useSelector(selectBhk)
-    const queryParams = {
-        city: "kochi",
-        bedrooms: 2,
-        bathrooms: 2
-    };
+    const type = useSelector(selectType);
 
-    const { data: properties, error, isLoading } = useGetFilterPropertiesQuery(queryParams);
+    const [getProperties, { data: properties }] = useLazyGetFilterPropertiesQuery();
 
-    const handleFilter = () => {
-        console.log(properties)
+
+    const handleFilter = async () => {
+        console.log(bhk)
+        console.log(type)
+        let queryString = ""
+        let queryParams = {}
+        if (bhk) {
+            queryString += `?bedrooms=${bhk}`
+            queryParams.bedrooms = bhk;
+            if (type) {
+                queryString += `&type=${type}`
+                queryParams.type = type;
+            }
+        } else if (type) {
+            queryString += `?type=${type}`
+            queryParams.type = type;
+        } else {
+            queryString = ""
+            queryParams = {}
+        }
+        navigate(queryString)
+        await getProperties(queryParams)
+        dispatch(setProperties(properties))
     }
 
     const handleReset = () => {
@@ -33,7 +52,9 @@ function Filters() {
         dispatch(setTypeFilter([]))
         dispatch(setBudgetFilter({ min: "", max: "" }))
         dispatch(setCarpetAreaFilter({ min: "", max: "" }))
+        navigate("/properties")
     }
+
 
     return (
         <div className='filters-container'>

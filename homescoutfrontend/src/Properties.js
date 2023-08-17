@@ -85,6 +85,13 @@ function Properties() {
         }
     }, [filteredPropertyWithTitle])
 
+    useEffect(() => {
+        if (checkedList !== "relevance") {
+            dispath(setPropertyCount(data?.length));
+            dispath(setProperties(sortedData))
+        }
+    }, [checkedList])
+
     if (isLoading) {
         return <div>Loading...</div>
     }

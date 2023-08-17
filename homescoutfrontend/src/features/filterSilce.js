@@ -28,4 +28,5 @@ export const { setTypeFilter, setBhkFilter, setBudgetFilter, setCarpetAreaFilter
 
 export default filterSlice.reducer;
 
+export const selectType = (state) => state.filter.type;
 export const selectBhk = (state) => state.filter.bhk;
