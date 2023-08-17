@@ -14,7 +14,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { setIsOpen } from './features/postPropertySlice';
 import { selectCurrentUser } from "./features/auth/authSlice";
 import { setIsOpenUpdate } from "./features/updatePropertySlice";
-import { useGetCityFilterQuery } from "./features/propertiesSlice";
+import { setProperties, useGetCityFilterQuery, useGetPropertiesByUserQuery, useGetPropertyQuery, useGetUserInfoQuery } from "./features/propertiesSlice";
+import { setPropertyCount } from "./features/countSlice";
 
 
 
@@ -67,12 +68,23 @@ function Navbar() {
     const queryParams = new URLSearchParams(location.search);
     const queryCity = queryParams.get('city');
     const [search, setSearch] = useState("")
-    const { id } = useParams();
+    const { id } = useParams()
 
     const dispatch = useDispatch()
     // const user = useSelector(selectCurrentUser)
     const user = localStorage.getItem("user") ? localStorage.getItem("user") : null;
+    const { data: userInfo } = useGetUserInfoQuery(user);
+    const { data: property } = useGetPropertyQuery(id);
+    const { data: propertiesByUser } = useGetPropertiesByUserQuery(userInfo?._id);
 
+    const handleListing = (k) => {
+        if (k.split(" ")[1] === "Listings") {
+            if (propertiesByUser) {
+                dispatch(setPropertyCount(propertiesByUser?.length));
+                dispatch(setProperties(propertiesByUser))
+            }
+        }
+    }
 
     const items = cities.map((city, index) => ({
         key: (index + 1).toString(),
@@ -88,7 +100,7 @@ function Navbar() {
     const profileItems = profile.map((k, index) => ({
         key: (index + 1).toString(),
         label: (
-            <div>
+            <div onClick={() => handleListing(k)}>
                 {k}
             </div>
         ),
@@ -154,7 +166,7 @@ function Navbar() {
             </div>
             <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    {user ? <>                    <Dropdown trigger={["click"]} overlay={profileMenu} placement="bottomLeft">
+                    {user ? <> <Dropdown trigger={["click"]} overlay={profileMenu} placement="bottomLeft">
                         <div>
                             <GoPerson style={{ color: "white", fontSize: "24px" }} />
                         </div>
@@ -189,7 +201,7 @@ function Navbar() {
                             POST PROPERTY
                         </span>
                     </div>}
-                    {user && id && <div
+                    {user && id && userInfo?._id === property.listedBy && < div
                         className="post-property-botton"
                         onClick={() => dispatch(setIsOpenUpdate(true))}
                     >
@@ -201,7 +213,7 @@ function Navbar() {
                     </div>}
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

@@ -82,11 +82,19 @@ export const propertiesSlice = apiSlice.injectEndpoints({
                 url: '/api/properties/sort',
                 method: 'POST',
                 body: { sortOption }
-            })
+            }),
+            providesTags: (result, error, { sortOption }) => [{ type: 'PropertyData', sortOption }],
         }),
-        providesTags: (result, error, { sortOption }) => [{ type: 'PropertyData', sortOption }],
-    })
+        getPropertiesByUser: builder.query({
+            query: (userId) => ({
+                url: '/api/properties/getPropertiesByUser',
+                method: 'POST',
+                body: { userId }
+            })
+        })
+    }),
 })
 
 export const { useGetPropertiesQuery, useGetPropertyQuery, useLazyGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery,
-    useCreatePropertyMutation, useUpdatePropertyMutation, useDeletePropertyMutation, useGetUserInfoQuery, useGetCityFilterQuery, useGetPropertiesWithTitleQuery, useGetSortedPropertiesQuery } = propertiesSlice;
+    useCreatePropertyMutation, useUpdatePropertyMutation, useDeletePropertyMutation, useGetUserInfoQuery, useGetCityFilterQuery,
+    useGetPropertiesWithTitleQuery, useGetSortedPropertiesQuery, useGetPropertiesByUserQuery } = propertiesSlice;

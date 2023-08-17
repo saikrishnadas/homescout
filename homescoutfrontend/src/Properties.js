@@ -12,7 +12,7 @@ import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPropertyCount } from './features/countSlice';
 import { useLazyQuery } from "@reduxjs/toolkit/query/react"
-import { selectProperties, setProperties, useGetCityFilterQuery, useGetPropertiesQuery, useGetPropertiesWithTitleQuery, useGetSortedPropertiesQuery, useUpdatePropertiesTypeQuery } from './features/propertiesSlice';
+import { selectProperties, setProperties, useGetCityFilterQuery, useGetPropertiesQuery, useGetPropertiesWithTitleQuery, useGetSortedPropertiesQuery, useGetUserInfoQuery, useUpdatePropertiesTypeQuery } from './features/propertiesSlice';
 
 
 
@@ -34,31 +34,10 @@ function Properties() {
     const { data: filteredPropertyWithTitle } = useGetPropertiesWithTitleQuery({ city, title })
     const { data: sortedData } = useGetSortedPropertiesQuery(checkedList);
 
-
-
-    // const { data: test } = useUpdatePropertiesTypeQuery();
-
-
-    // const fetchProperties = () => {
-    //     try {
-    //         let url = 'http://127.0.0.1:8000/api/properties/filter/';
-    //         if (city) {
-    //             url += `?city=${city.toLowerCase()}`;
-    //         }
-    //         if (title) {
-    //             url += city ? `&title=${title.toLowerCase()}` : `?title=${title.toLowerCase()}`;
-    //         }
-    //         if (!city && !title) {
-    //             url = "http://127.0.0.1:8000/api/properties"
-    //         }
-    //         return axios.get(url)
-    //     } catch (error) {
-    //         throw new Error(error.response.data.message || 'Failed to fetch properties');
-    //     }
-    // }
-
-    // const { isLoading, data, isError, error } = useQuery(['properties', city], fetchProperties, { refetchOnWindowFocus: true })
-
+    const user = localStorage.getItem("user") ? localStorage.getItem("user") : null;
+    const { data: userInfo } = useGetUserInfoQuery(user);
+    // const userInfoWithoutPassword = { ...userInfo, password: undefined }
+    // if (userInfo) localStorage.setItem("userInfo", JSON.stringify(userInfoWithoutPassword))
 
     useEffect(() => {
         if (data) {
@@ -152,13 +131,13 @@ function Properties() {
                             id={property._id}
                             title={property.title}
                             rent={property.rent}
-                            carpetArea={property.carpet_area}
+                            carpetArea={property.carpetArea}
                             bedrooms={property.bedrooms}
                             bathrooms={property.bathrooms}
                             parking={property.parking}
-                            propertyDescription={property.property_description}
-                            listedBy={property.listed_by}
-                            listedOn={property.listed_on} />
+                            propertyDescription={property.propertyDescription}
+                            listedBy={property.listedBy}
+                            listedOn={property.listedOn} />
                     ))}
                 </div>
             </div>

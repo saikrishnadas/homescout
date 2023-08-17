@@ -11,7 +11,8 @@ const sortOptions = {
 
 export const getAllProperties = async (req, res) => {
     try {
-        const properties = await Property.find()
+        // const properties = await Property.find().populate('listedBy')
+        const properties = await Property.find();
         res.status(200).json(properties);
     } catch (err) {
         res.status(404).json({ message: err.message })
@@ -185,4 +186,14 @@ export const deleteProperty = async (req, res) => {
     } catch {
         return res.status(500).json({ error: 'An error occurred while updating property for.' });
     }
-} 
+}
+
+export const getPropertiesByUser = async (req, res) => {
+    try {
+        const { userId } = req.body;
+        const properties = await Property.find({ listedBy: userId });
+        res.status(200).json(properties)
+    } catch (error) {
+        return res.status(500).json({ error: 'An error occurred while updating property for.' });
+    }
+}
