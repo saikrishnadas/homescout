@@ -11,12 +11,13 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPropertyCount } from './features/countSlice';
-import { selectProperties, setProperties, useGetCityFilterQuery, useGetPropertiesQuery, useUpdatePropertiesTypeQuery } from './features/propertiesSlice';
+import { useLazyQuery } from "@reduxjs/toolkit/query/react"
+import { selectProperties, setProperties, useGetCityFilterQuery, useGetPropertiesQuery, useGetPropertiesWithTitleQuery, useGetSortedPropertiesQuery, useUpdatePropertiesTypeQuery } from './features/propertiesSlice';
 
 
 
 function Properties() {
-    const [checkedList, setCheckedList] = useState("Relevance")
+    const [checkedList, setCheckedList] = useState("relevance")
 
     const dispath = useDispatch()
     const location = useLocation();
@@ -30,6 +31,8 @@ function Properties() {
     const { data, isLoading, isError, error } = useGetPropertiesQuery();
     const allProperties = useSelector(selectProperties);
     const { data: filteredProperty } = useGetCityFilterQuery(city)
+    const { data: filteredPropertyWithTitle } = useGetPropertiesWithTitleQuery({ city, title })
+    const { data: sortedData } = useGetSortedPropertiesQuery(checkedList);
 
 
 
@@ -65,10 +68,22 @@ function Properties() {
     }, [data])
 
     useEffect(() => {
-        if (filteredProperty) {
+        if (filteredProperty && city) {
             dispath(setProperties(filteredProperty))
+        } else {
+            dispath(setProperties(data))
         }
     }, [filteredProperty])
+
+    useEffect(() => {
+        if (filteredPropertyWithTitle && title) {
+            dispath(setProperties(filteredPropertyWithTitle))
+        } else if (filteredProperty && city) {
+            dispath(setProperties(filteredProperty))
+        } else {
+            dispath(setProperties(data))
+        }
+    }, [filteredPropertyWithTitle])
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -79,11 +94,27 @@ function Properties() {
         return <div>{error.message}</div>
     }
 
+    const handleSortOption = (option) => {
+        if (option === "Relevance") {
+            setCheckedList("relevance")
+        } else if (option === "Posted On (Recent first)") {
+            setCheckedList("recent")
+        } else if (option === "Posted On (Oldest first)") {
+            setCheckedList("old")
+        } else if (option === "Price (High to Low)") {
+            setCheckedList("priceHighToLow")
+        } else if (option === "Price (Low to High)") {
+            setCheckedList("priceLowToHigh")
+        } else {
+            setCheckedList("relevance")
+        }
+    }
+
 
     const menu = (
         <div className="dropdown-menu-options">
             {options.map((option) => (
-                <div key={option} value={option} onClick={() => setCheckedList(option)} className="dropdown-menu-options-item">
+                <div key={option} value={option} onClick={() => handleSortOption(option)} className="dropdown-menu-options-item">
                     {option}
                 </div>
             ))}

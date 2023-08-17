@@ -1,5 +1,14 @@
 import Property from "../models/Property.js";
 
+// Sort options mapping
+const sortOptions = {
+    relevance: 'id', // No sorting (same as old data)
+    recent: 'createdAt', // Posted on recent first
+    old: 'createdAt',    // Posted on old first
+    priceHighToLow: 'rent', // Price high to low
+    priceLowToHigh: 'rent', // Price low to high
+};
+
 export const getAllProperties = async (req, res) => {
     try {
         const properties = await Property.find()
@@ -53,12 +62,15 @@ export const getProperty = async (req, res) => {
 
 export const filterProperties = async (req, res) => {
     try {
-        const { bedrooms, carpetArea, bathrooms, bachelorsAllowed, parking, petAllowed, city } = req.query;
+        const { bedrooms, carpetArea, bathrooms, bachelorsAllowed, parking, petAllowed, city, title } = req.query;
 
         // Build the filter object based on provided query parameters
         let filters = {};
         if (bedrooms) {
             filters.bedrooms = bedrooms;
+        }
+        if (title) {
+            filters.title = title;
         }
         if (city) {
             filters.city = city;
@@ -83,6 +95,39 @@ export const filterProperties = async (req, res) => {
         res.status(200).json(filteredProperties);
     } catch (error) {
         res.status(404).json({ message: err.message })
+    }
+}
+
+export const sortProperties = async (req, res) => {
+    try {
+        const { sortOption } = req.body;
+
+        const data = await Property.find().exec();
+
+        if (!sortOption || !sortOptions.hasOwnProperty(sortOption)) {
+            return res.status(400).json({ error: 'Invalid sort option' });
+        }
+
+        const sortBy = sortOptions[sortOption];
+
+        // Clone the data array to avoid mutating the original data
+        const sortedData = [...data]
+
+        if (sortOption === 'relevance') {
+            // No sorting needed
+        } else if (sortOption === 'recent') {
+            sortedData.sort((a, b) => b[sortBy] - a[sortBy]);
+        } else if (sortOption === 'old') {
+            sortedData.sort((a, b) => a[sortBy] - b[sortBy]);
+        } else if (sortOption === 'priceHighToLow') {
+            sortedData.sort((a, b) => b[sortBy] - a[sortBy]);
+        } else {
+            sortedData.sort((a, b) => a[sortBy] - b[sortBy]);
+        }
+        res.status(200).json(sortedData);
+
+    } catch {
+        return res.status(500).json({ error: 'An error occurred while updating property for.' });
     }
 }
 

@@ -61,9 +61,31 @@ export const propertiesSlice = apiSlice.injectEndpoints({
         getCityFilter: builder.query({
             query: (city) => `/api/properties/filter?city=${city}`,
             providesTags: (result, error, city) => [{ type: 'CityData', city }]
+        }),
+        getPropertiesWithTitle: builder.query({
+            query: ({ city, title }) => {
+                let queryString = '/api/properties/filter';
+                if (city) {
+                    queryString += `?city=${city}`
+                    if (title) {
+                        queryString += `&title=${title}`;
+                    }
+                } else if (title) {
+                    queryString += `?title=${title}`
+                }
+                return queryString;
+            },
+            providesTags: (result, error, { city, title }) => [{ type: 'CityData', city, title }],
+        }),
+        getSortedProperties: builder.query({
+            query: (sortOption) => ({
+                url: '/api/properties/sort',
+                method: 'POST',
+                body: { sortOption }
+            })
         })
     })
 })
 
 export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery,
-    useCreatePropertyMutation, useUpdatePropertyMutation, useDeletePropertyMutation, useGetUserInfoQuery, useGetCityFilterQuery } = propertiesSlice;
+    useCreatePropertyMutation, useUpdatePropertyMutation, useDeletePropertyMutation, useGetUserInfoQuery, useGetCityFilterQuery, useGetPropertiesWithTitleQuery, useGetSortedPropertiesQuery } = propertiesSlice;
