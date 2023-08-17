@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { setIsOpen } from './features/postPropertySlice';
 import { selectCurrentUser } from "./features/auth/authSlice";
 import { setIsOpenUpdate } from "./features/updatePropertySlice";
+import { useGetCityFilterQuery } from "./features/propertiesSlice";
 
 
 

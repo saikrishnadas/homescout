@@ -18,6 +18,7 @@ function Property({ id, title, rent, carpetArea, bedrooms, bathrooms, parking, p
     const handleDeleteProperty = async () => {
         await deleteProperty(id);
     }
+
     return (
         <div className='property-container' onClick={handleNavigation}>
             <div className='property-top-container'>

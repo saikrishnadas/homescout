@@ -9,9 +9,9 @@ import Property from './Property';
 import { useQuery } from "react-query"
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPropertyCount } from './features/countSlice';
-import { useGetPropertiesQuery, useUpdatePropertiesTypeQuery } from './features/propertiesSlice';
+import { selectProperties, setProperties, useGetCityFilterQuery, useGetPropertiesQuery, useUpdatePropertiesTypeQuery } from './features/propertiesSlice';
 
 
 
@@ -28,6 +28,10 @@ function Properties() {
     const options = ['Relevance', 'Posted On (Recent first)', 'Posted On (Oldest first)', 'Price (High to Low)', 'Price (Low to High)']
 
     const { data, isLoading, isError, error } = useGetPropertiesQuery();
+    const allProperties = useSelector(selectProperties);
+    const { data: filteredProperty } = useGetCityFilterQuery(city)
+
+
 
     // const { data: test } = useUpdatePropertiesTypeQuery();
 
@@ -56,8 +60,15 @@ function Properties() {
     useEffect(() => {
         if (data) {
             dispath(setPropertyCount(data?.length));
+            dispath(setProperties(data))
         }
     }, [data])
+
+    useEffect(() => {
+        if (filteredProperty) {
+            dispath(setProperties(filteredProperty))
+        }
+    }, [filteredProperty])
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -86,7 +97,7 @@ function Properties() {
             <Filters />
             <div className='properties-container'>
                 <div className='properties-sort-container'>
-                    <span>{data?.length} - Apartments, Flats For Rent {city && `In ${city}`}</span>
+                    <span>{allProperties?.length} - Apartments, Flats For Rent {city && `In ${city}`}</span>
                     <div className='properties-sort-button'>
                         <span>Sort by: </span>
                         <Dropdown overlay={menu} trigger={['click']}>
@@ -97,7 +108,7 @@ function Properties() {
                     </div>
                 </div>
                 <div style={{ marginTop: "10px", marginBottom: "10px", display: "flex", flexDirection: "column", gap: "10px" }}>
-                    {data?.map((property) => (
+                    {allProperties?.map((property) => (
 
                         <Property key={property._id}
                             id={property._id}
