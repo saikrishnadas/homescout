@@ -7,6 +7,11 @@ const propertySchema = new mongoose.Schema({
         max: 255,
         min: 2
     },
+    propertyType: {
+        type: String,
+        required: true,
+        default: "apartment"
+    },
     rent: {
         type: Number,
         required: true,
@@ -68,9 +73,11 @@ const propertySchema = new mongoose.Schema({
     },
     state: {
         type: String,
+        default: "kerala"
     },
     country: {
         type: String,
+        default: "india"
     },
     location: {
         type: String,

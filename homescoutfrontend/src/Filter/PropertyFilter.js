@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dropdown, Checkbox, Button } from 'antd';
+import { Dropdown, Radio, Button } from 'antd';
 import { AiOutlineCaretDown } from "react-icons/ai";
 import "./Filters.css"
 import { useDispatch } from "react-redux"
@@ -8,32 +8,27 @@ import { setTypeFilter } from "../features/filterSilce"
 
 
 function PropertyFilter() {
-    const [checkedList, setCheckedList] = useState([]);
+    const [selectedOption, setSelectedOption] = useState(null);
     const options = ['Apartment', 'Villa', 'Builder Floor'];
     const dispatch = useDispatch()
 
     const handleMenuClick = (e) => {
-        const { value, checked } = e.target;
-        const updatedList = checked
-            ? [...checkedList, value]
-            : checkedList.filter((item) => item !== value);
-
-        setCheckedList(updatedList);
-        dispatch(setTypeFilter(updatedList))
+        const { value } = e.target;
+        setSelectedOption(value);
+        dispatch(setTypeFilter(value.toLowerCase().replace(/\s+/g, '_')));
     };
 
     const menu = (
         <div className="dropdown-menu">
-            <Checkbox.Group value={checkedList} className="dropdown-menu-options">
+            <Radio.Group value={selectedOption} className="dropdown-menu-options">
                 {options.map((option) => (
-                    <Checkbox key={option} value={option} onChange={handleMenuClick} className="dropdown-menu-options-item" >
+                    <Radio key={option} value={option} onChange={handleMenuClick} className="dropdown-menu-options-item" >
                         {option}
-                    </Checkbox>
+                    </Radio>
                 ))}
-            </Checkbox.Group>
+            </Radio.Group>
         </div>
     );
-
 
     return (
         <div >

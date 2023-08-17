@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from "./Navbar"
 import "./Detail.css"
 import { Checkbox } from 'antd';
@@ -9,22 +9,15 @@ import { useQuery } from "react-query"
 import axios from 'axios';
 import { useParams } from "react-router-dom"
 import moment from 'moment'
-import { useGetPropertyQuery } from './features/propertiesSlice';
+import { useGetPropertyQuery, useUpdatePropertyMutation } from './features/propertiesSlice';
+import UpdatePropertyModal from './UpdatePropertyModal';
+import { useEffect } from 'react';
 
 function Detail() {
     const { id } = useParams();
 
     const { data, isLoading, isError, error } = useGetPropertyQuery(id);
 
-    // const fetchProperty = () => {
-    //     return axios.get(`http://127.0.0.1:8000/api/properties/${id}`, {
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     })
-    // }
-
-    // const { isLoading, data, isError, error } = useQuery("property", fetchProperty)
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -35,11 +28,13 @@ function Detail() {
         return <div>{error.message}</div>
     }
 
-    console.log(data)
+    console.log("Detail page:", data)
 
     return (
         <div>
             <Navbar />
+            <UpdatePropertyModal data={data} />
+
             <div className='detail-container'>
                 {/* Parent DIV */}
                 <div >

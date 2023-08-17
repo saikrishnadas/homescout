@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Modal, Button, Dropdown, Space, Menu, Input } from "antd";
 import "./PostPropertyModal.css"
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
     GoThreeBars,
     GoSearch,
@@ -9,10 +9,11 @@ import {
     GoPerson,
 } from "react-icons/go";
 import { useSelector, useDispatch } from 'react-redux';
-import { setIsOpen } from './features/postPropertySlice';
 import { useMutation } from "react-query"
 import axios from 'axios';
-import { useCreatePropertyMutation, useGetUserInfoQuery } from './features/propertiesSlice';
+import { useUpdatePropertyMutation } from './features/propertiesSlice';
+import { useEffect } from 'react';
+import { setIsOpenUpdate } from './features/updatePropertySlice';
 
 
 const { TextArea } = Input
@@ -52,29 +53,28 @@ const cities = [
 ]
 
 
-function PostPropertyModal() {
+function UpdatePropertyModal({ data }) {
     const naviagte = useNavigate()
-    const isModalOpen = useSelector((state) => state.postProperty.isOpen)
+    const isModalOpen = useSelector((state) => state.updateProperty.isOpenUpdate)
     // const [isModalOpen, setIsModalOpen] = useState(true);
     const [type, setType] = useState("rent")
-    const [title, setTitle] = useState("")
-    const [propertyType, setPropertyType] = useState("")
-    const [unit, setUnit] = useState(0)
-    const [city, setCity] = useState("")
-    const [location, setLocation] = useState("")
-    const [builduparea, setBuilduparea] = useState("")
-    const [carpetarea, setCarpetarea] = useState("")
-    const [rent, setRent] = useState("")
-    const [deposit, setDeposit] = useState("")
-    const [desc, setDesc] = useState("")
-    const [bath, setBath] = useState(0)
+    const [title, setTitle] = useState(data?.title)
+    const [propertyType, setPropertyType] = useState(data?.propertyType)
+    const [unit, setUnit] = useState(data?.bedrooms)
+    const [city, setCity] = useState(data?.city)
+    const [location, setLocation] = useState(data?.location)
+    const [builduparea, setBuilduparea] = useState(data?.buildUpArea)
+    const [carpetarea, setCarpetarea] = useState(data?.carpetArea)
+    const [rent, setRent] = useState(data?.rent)
+    const [deposit, setDeposit] = useState(data?.securityDeposit)
+    const [desc, setDesc] = useState(data?.propertyDescription)
+    const [bath, setBath] = useState(data?.bathrooms)
+
+    const { id } = useParams();
 
     const dispatch = useDispatch()
 
-    const [createProperty, { isLoading, isError, error: createError }] = useCreatePropertyMutation();
-
-    const user = localStorage.getItem("user") ? localStorage.getItem("user") : null;
-    const { data: userInfo } = useGetUserInfoQuery(user);
+    const [updateProperty, { isLoading, isError, updateError }] = useUpdatePropertyMutation(id, data);
 
     const items = cities.map((city, index) => ({
         key: (index + 1).toString(),
@@ -99,12 +99,13 @@ function PostPropertyModal() {
 
 
     const showModal = () => {
-        dispatch(setIsOpen(true))
+        dispatch(setIsOpenUpdate(true))
     };
 
     const handleOk = async () => {
         try {
-            const data = {
+            console.log(title)
+            const updatedData = {
                 type: type,
                 title: title,
                 buildUpArea: builduparea,
@@ -116,21 +117,20 @@ function PostPropertyModal() {
                 rent: rent,
                 securityDeposit: deposit,
                 propertyDescription: desc,
-                bathrooms: bath,
-                listedBy: userInfo?._id
+                bathrooms: bath
             }
-            console.log(data)
-            const response = await createProperty(data);
+            console.log(updatedData)
+            const response = await updateProperty(id, updatedData);
             console.log(response)
-            dispatch(setIsOpen(false))
+            dispatch(setIsOpenUpdate(false))
         } catch (error) {
             console.log(error?.message)
-            console.log(createError)
+            console.log(updateError)
         }
     };
 
     const handleCancel = () => {
-        dispatch(setIsOpen(false))
+        dispatch(setIsOpenUpdate(false))
     };
 
     return (
@@ -138,7 +138,7 @@ function PostPropertyModal() {
             footer={null}
             header={null}
             onCancel={handleCancel}
-            title="Post Property"
+            title="Update Property"
         >
             <>
                 <div className='sub-title'>Rent your property in simple steps </div>
@@ -150,7 +150,7 @@ function PostPropertyModal() {
                 </div>
                 <div style={{ display: "flex", flexDirection: "column" }}>
                     <div className='label'>Title*</div>
-                    <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter the title' onChange={(e) => setTitle(e.target.value)} />
+                    <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter the title' value={title} onChange={(e) => setTitle(e.target.value)} />
                 </div>
                 <div className='label'>Property Type*</div>
                 <div className="option-button-container">
@@ -192,28 +192,28 @@ function PostPropertyModal() {
                 <div style={{ display: "flex", gap: "10px" }}>
                     <div style={{ display: "flex", flexDirection: "column" }}>
                         <div className='label'>Build up area*</div>
-                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter build up area' onChange={(e) => setBuilduparea(e.target.value)} />
+                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} value={builduparea} placeholder='Enter build up area' onChange={(e) => setBuilduparea(e.target.value)} />
 
                     </div>
                     <div style={{ display: "flex", flexDirection: "column" }}>
                         <div className='label'>Carpet area*</div>
-                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter carpet area' onChange={(e) => setCarpetarea(e.target.value)} />
+                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} value={carpetarea} placeholder='Enter carpet area' onChange={(e) => setCarpetarea(e.target.value)} />
                     </div>
                 </div>
                 <div className='sub-sub-title'>Property Price</div>
                 <div style={{ display: "flex", gap: "10px" }}>
                     <div style={{ display: "flex", flexDirection: "column" }}>
                         <div className='label'>Rent*</div>
-                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter the rent' onChange={(e) => setRent(e.target.value)} />
+                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} value={rent} placeholder='Enter the rent' onChange={(e) => setRent(e.target.value)} />
                     </div>
                     <div style={{ display: "flex", flexDirection: "column" }}>
                         <div className='label'>Deposit*</div>
-                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter the deposit' onChange={(e) => setDeposit(e.target.value)} />
+                        <Input style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} value={deposit} placeholder='Enter the deposit' onChange={(e) => setDeposit(e.target.value)} />
                     </div>
                 </div>
                 <div className='sub-sub-title'>More information of your property </div>
                 <div className='label'>Property Description*</div>
-                <TextArea style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} placeholder='Enter property description' onChange={(e) => setDesc(e.target.value)} />
+                <TextArea style={{ width: "100%", height: "40px", border: "1px solid #37a5a9", borderRadius: "4px" }} value={desc} placeholder='Enter property description' onChange={(e) => setDesc(e.target.value)} />
                 <div className='label'>No of Bathrooms*</div>
                 <div className="option-button-container">
                     <div className={bath === 1 ? "option-button-selected" : "option-button"} onClick={() => setBath(1)}><span>1BATH</span></div>
@@ -229,7 +229,7 @@ function PostPropertyModal() {
                     <span
                         className="post-property-botton-text"
                     >
-                        POST PROPERTY
+                        UPDATE PROPERTY
                     </span>
                 </div></div>
 
@@ -238,4 +238,4 @@ function PostPropertyModal() {
     )
 }
 
-export default PostPropertyModal
+export default UpdatePropertyModal

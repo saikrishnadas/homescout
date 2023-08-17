@@ -59,4 +59,15 @@ export const login = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
-} 
+}
+
+
+export const getUserInfo = async (req, res) => {
+    try {
+        const { email } = req.params;
+        const userInfo = await User.findOne({ email: email }).exec();
+        res.status(200).json(userInfo);
+    } catch {
+        res.status(500).json({ error: error.message })
+    }
+}

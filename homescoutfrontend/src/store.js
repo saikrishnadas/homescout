@@ -5,6 +5,7 @@ import countSlice from "./features/countSlice";
 import filterSilce from "./features/filterSilce";
 import postPropertySlice from "./features/postPropertySlice";
 import propertySlice from "./features/propertiesSlice"
+import updatePropertySlice from "./features/updatePropertySlice";
 
 const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
         count: countSlice,
         postProperty: postPropertySlice,
         filter: filterSilce,
-        properties: propertySlice
+        properties: propertySlice,
+        updateProperty: updatePropertySlice
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice.middleware), //This middleware is need to make RTK query
 });
