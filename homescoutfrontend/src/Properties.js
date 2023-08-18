@@ -2,17 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Filters from './Filter/Filters'
 import Navbar from './Navbar'
 import PropertiesBar from './PropertiesBar'
-import { Dropdown, Checkbox, Button } from 'antd';
+import { Dropdown } from 'antd';
 import { AiOutlineCaretDown } from "react-icons/ai";
 import "./Properties.css"
 import Property from './Property';
-import { useQuery } from "react-query"
-import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPropertyCount } from './features/countSlice';
-import { useLazyQuery } from "@reduxjs/toolkit/query/react"
-import { selectProperties, setProperties, useGetCityFilterQuery, useGetPropertiesQuery, useGetPropertiesWithTitleQuery, useGetSortedPropertiesQuery, useUpdatePropertiesTypeQuery } from './features/propertiesSlice';
+import { selectProperties, setProperties, useGetPropertiesQuery, useGetSortedPropertiesQuery, useGetUserInfoQuery } from './features/propertiesSlice';
 
 
 
@@ -30,35 +27,10 @@ function Properties() {
 
     const { data, isLoading, isError, error } = useGetPropertiesQuery();
     const allProperties = useSelector(selectProperties);
-    const { data: filteredProperty } = useGetCityFilterQuery(city)
-    const { data: filteredPropertyWithTitle } = useGetPropertiesWithTitleQuery({ city, title })
-    const { data: sortedData } = useGetSortedPropertiesQuery(checkedList);
+    const { data: sortedData } = useGetSortedPropertiesQuery(checkedList, { skip: checkedList === "relevance" });
 
-
-
-    // const { data: test } = useUpdatePropertiesTypeQuery();
-
-
-    // const fetchProperties = () => {
-    //     try {
-    //         let url = 'http://127.0.0.1:8000/api/properties/filter/';
-    //         if (city) {
-    //             url += `?city=${city.toLowerCase()}`;
-    //         }
-    //         if (title) {
-    //             url += city ? `&title=${title.toLowerCase()}` : `?title=${title.toLowerCase()}`;
-    //         }
-    //         if (!city && !title) {
-    //             url = "http://127.0.0.1:8000/api/properties"
-    //         }
-    //         return axios.get(url)
-    //     } catch (error) {
-    //         throw new Error(error.response.data.message || 'Failed to fetch properties');
-    //     }
-    // }
-
-    // const { isLoading, data, isError, error } = useQuery(['properties', city], fetchProperties, { refetchOnWindowFocus: true })
-
+    const user = localStorage.getItem("user") ? localStorage.getItem("user") : null;
+    const { data: userInfo } = useGetUserInfoQuery(user);
 
     useEffect(() => {
         if (data) {
@@ -66,24 +38,6 @@ function Properties() {
             dispath(setProperties(data))
         }
     }, [data])
-
-    useEffect(() => {
-        if (filteredProperty && city) {
-            dispath(setProperties(filteredProperty))
-        } else {
-            dispath(setProperties(data))
-        }
-    }, [filteredProperty])
-
-    useEffect(() => {
-        if (filteredPropertyWithTitle && title) {
-            dispath(setProperties(filteredPropertyWithTitle))
-        } else if (filteredProperty && city) {
-            dispath(setProperties(filteredProperty))
-        } else {
-            dispath(setProperties(data))
-        }
-    }, [filteredPropertyWithTitle])
 
     useEffect(() => {
         if (checkedList !== "relevance") {
@@ -101,7 +55,7 @@ function Properties() {
         return <div>{error.message}</div>
     }
 
-    const handleSortOption = (option) => {
+    const handleSortOption = async (option) => {
         if (option === "Relevance") {
             setCheckedList("relevance")
         } else if (option === "Posted On (Recent first)") {
@@ -152,13 +106,13 @@ function Properties() {
                             id={property._id}
                             title={property.title}
                             rent={property.rent}
-                            carpetArea={property.carpet_area}
+                            carpetArea={property.carpetArea}
                             bedrooms={property.bedrooms}
                             bathrooms={property.bathrooms}
                             parking={property.parking}
-                            propertyDescription={property.property_description}
-                            listedBy={property.listed_by}
-                            listedOn={property.listed_on} />
+                            propertyDescription={property.propertyDescription}
+                            listedBy={property.listedBy}
+                            listedOn={property.listedOn} />
                     ))}
                 </div>
             </div>

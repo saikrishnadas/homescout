@@ -7,14 +7,15 @@ import {
 import "./Navbar.css";
 import { Button, Dropdown, Space, Menu } from "antd";
 import { useEffect, useState } from "react"
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import CityModal from "./CityModal";
 import PostPropertyModal from "./PostPropertyModal";
 import { useDispatch, useSelector } from "react-redux"
 import { setIsOpen } from './features/postPropertySlice';
 import { selectCurrentUser } from "./features/auth/authSlice";
 import { setIsOpenUpdate } from "./features/updatePropertySlice";
-import { useGetCityFilterQuery } from "./features/propertiesSlice";
+import { setProperties, useLazyGetPropertiesByUserQuery, useGetPropertyQuery, useGetUserInfoQuery, useGetCityFilterQuery, useGetPropertiesWithTitleQuery } from "./features/propertiesSlice";
+import { setPropertyCount } from "./features/countSlice";
 
 
 
@@ -66,19 +67,47 @@ function Navbar() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const queryCity = queryParams.get('city');
+    const queryTitle = queryParams.get('title');
     const [search, setSearch] = useState("")
-    const { id } = useParams();
+    const { id } = useParams()
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     // const user = useSelector(selectCurrentUser)
     const user = localStorage.getItem("user") ? localStorage.getItem("user") : null;
+    const { data: userInfo } = useGetUserInfoQuery(user);
+    const { data: property } = useGetPropertyQuery(id, { skip: id === undefined });
+    const [getPropertiesByUser, { data: propertiesByUser }] = useLazyGetPropertiesByUserQuery();
+    const { data: filteredProperty } = useGetCityFilterQuery(queryCity, { skip: queryCity === null });
+    const { data: filteredPropertyWithTitle } = useGetPropertiesWithTitleQuery({ queryCity, queryTitle }, { skip: queryTitle === null })
+
+    if (queryCity) {
+        if (filteredProperty) {
+            dispatch(setProperties(filteredProperty));
+        }
+    }
+
+    if (queryTitle) {
+        if (filteredPropertyWithTitle) {
+            dispatch(setProperties(filteredPropertyWithTitle));
+        }
+    }
+
+    const handleListing = async (k) => {
+        // if (k.split(" ")[1] === "Listings") {
+        //     await getPropertiesByUser(userInfo?._id);
+        //     if (propertiesByUser) {
+        //         dispatch(setPropertyCount(propertiesByUser?.length));
+        //         dispatch(setProperties(propertiesByUser))
+        //     }
+        // }
+    }
 
 
     const items = cities.map((city, index) => ({
         key: (index + 1).toString(),
         label: (
             <div
-                onClick={() => naviagte(`?city=${city}`)}
+                onClick={() => handleCityFilter(city)}
             >
                 {city}
             </div>
@@ -88,7 +117,7 @@ function Navbar() {
     const profileItems = profile.map((k, index) => ({
         key: (index + 1).toString(),
         label: (
-            <div>
+            <div onClick={() => handleListing(k)}>
                 {k}
             </div>
         ),
@@ -114,8 +143,24 @@ function Navbar() {
         </Menu>
     );
 
-    const handleSearch = () => {
-        naviagte(`?city=${queryCity}&title=${search}`)
+
+
+    const handleCityFilter = async (city) => {
+        naviagte(`?city=${city}`)
+    }
+
+
+    const handleSearch = async () => {
+        let queryString = ''
+        if (queryCity) {
+            queryString += `?city=${queryCity}`;
+            if (search.length > 0) {
+                queryString += `&title=${search}`;
+            }
+        } else if (search.length > 0) {
+            queryString += `?title=${search}`;
+        }
+        naviagte(queryString)
     }
 
     return (
@@ -154,7 +199,7 @@ function Navbar() {
             </div>
             <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    {user ? <>                    <Dropdown trigger={["click"]} overlay={profileMenu} placement="bottomLeft">
+                    {user ? <> <Dropdown trigger={["click"]} overlay={profileMenu} placement="bottomLeft">
                         <div>
                             <GoPerson style={{ color: "white", fontSize: "24px" }} />
                         </div>
@@ -189,7 +234,7 @@ function Navbar() {
                             POST PROPERTY
                         </span>
                     </div>}
-                    {user && id && <div
+                    {user && id && userInfo?._id === property.listedBy && < div
                         className="post-property-botton"
                         onClick={() => dispatch(setIsOpenUpdate(true))}
                     >
@@ -201,7 +246,7 @@ function Navbar() {
                     </div>}
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

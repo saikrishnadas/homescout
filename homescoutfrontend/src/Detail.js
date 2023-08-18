@@ -16,7 +16,7 @@ import { useEffect } from 'react';
 function Detail() {
     const { id } = useParams();
 
-    const { data, isLoading, isError, error } = useGetPropertyQuery(id);
+    const { data, isLoading, isError, error } = useGetPropertyQuery(id, { skip: id === undefined });
 
 
     if (isLoading) {

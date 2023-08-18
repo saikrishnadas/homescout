@@ -11,7 +11,8 @@ const sortOptions = {
 
 export const getAllProperties = async (req, res) => {
     try {
-        const properties = await Property.find()
+        // const properties = await Property.find().populate('listedBy')
+        const properties = await Property.find();
         res.status(200).json(properties);
     } catch (err) {
         res.status(404).json({ message: err.message })
@@ -66,10 +67,10 @@ export const filterProperties = async (req, res) => {
 
         // Build the filter object based on provided query parameters
         let filters = {};
-        if (type) {
+        if (type && type !== 'null' && type !== null) {
             filters.type = type;
         }
-        if (bedrooms) {
+        if (bedrooms && bedrooms !== '0' && bedrooms !== 0) {
             filters.bedrooms = bedrooms;
         }
         if (title) {
@@ -78,7 +79,7 @@ export const filterProperties = async (req, res) => {
         if (city) {
             filters.city = city;
         }
-        if (bathrooms) {
+        if (bathrooms && bathrooms !== '0' && bathrooms !== 0) {
             filters.bathrooms = bathrooms;
         }
         if (parking) {
@@ -93,8 +94,9 @@ export const filterProperties = async (req, res) => {
         if (petAllowed) {
             filters.petAllowed = petAllowed === 'true'; // Convert the string to a boolean
         }
-
+        // console.log(filters)
         const filteredProperties = await Property.find(filters)
+        // console.log(filteredProperties)
         res.status(200).json(filteredProperties);
     } catch (error) {
         res.status(404).json({ message: err.message })
@@ -185,4 +187,14 @@ export const deleteProperty = async (req, res) => {
     } catch {
         return res.status(500).json({ error: 'An error occurred while updating property for.' });
     }
-} 
+}
+
+export const getPropertiesByUser = async (req, res) => {
+    try {
+        const { userId } = req.body;
+        const properties = await Property.find({ listedBy: userId });
+        res.status(200).json(properties)
+    } catch (error) {
+        return res.status(500).json({ error: 'An error occurred while updating property for.' });
+    }
+}

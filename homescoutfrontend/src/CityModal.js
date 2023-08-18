@@ -142,8 +142,8 @@ function CityModal() {
                 </div>
                 <div className="other-cities-button">Other cities</div>
                 <div className="other-cities-container">
-                    {cities.filter(city => !mainCities.includes(city)).map(city => (
-                        <div className="other-city" onClick={() => naviagte(`?city=${city.toLowerCase()}`)}>{city}</div>
+                    {cities.filter(city => !mainCities.includes(city)).map((city, index) => (
+                        <div key={index} className="other-city" onClick={() => naviagte(`?city=${city.toLowerCase()}`)}>{city}</div>
                     ))}
                 </div>
             </>

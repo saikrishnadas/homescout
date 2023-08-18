@@ -8,7 +8,8 @@ const authSlice = createSlice({
             const { user, accessToken } = action.payload;
             state.user = user;
             state.token = accessToken;
-            localStorage.setItem("user", user) //for testing
+            localStorage.setItem("user", user)
+            localStorage.setItem("accessToken", accessToken);
         },
 
         logOut: (state) => {
