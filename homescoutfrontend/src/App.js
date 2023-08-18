@@ -11,6 +11,8 @@ import Projects from './Projects';
 import RequireAuth from './features/auth/RequireAuth';
 import Layout from "./components/Layout"
 import Pro from './components/Pro';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from './features/auth/authSlice';
 
 function Test() {
   return (
@@ -22,6 +24,12 @@ function Test() {
 
 function App() {
   const queryClient = new QueryClient();
+  const dispatch = useDispatch();
+  const storedToken = localStorage.getItem("accessToken");
+  const storedUser = localStorage.getItem("user");
+  if (storedToken) {
+    dispatch(setCredentials({ user: storedUser, accessToken: storedToken }));
+  }
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>

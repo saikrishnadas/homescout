@@ -7,14 +7,14 @@ import {
 import "./Navbar.css";
 import { Button, Dropdown, Space, Menu } from "antd";
 import { useEffect, useState } from "react"
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import CityModal from "./CityModal";
 import PostPropertyModal from "./PostPropertyModal";
 import { useDispatch, useSelector } from "react-redux"
 import { setIsOpen } from './features/postPropertySlice';
 import { selectCurrentUser } from "./features/auth/authSlice";
 import { setIsOpenUpdate } from "./features/updatePropertySlice";
-import { setProperties, useGetCityFilterQuery, useGetPropertiesByUserQuery, useGetPropertyQuery, useGetUserInfoQuery } from "./features/propertiesSlice";
+import { setProperties, useLazyGetPropertiesByUserQuery, useGetPropertyQuery, useGetUserInfoQuery, useLazyGetCityFilterQuery, useLazyGetPropertiesWithTitleQuery } from "./features/propertiesSlice";
 import { setPropertyCount } from "./features/countSlice";
 
 
@@ -70,15 +70,18 @@ function Navbar() {
     const [search, setSearch] = useState("")
     const { id } = useParams()
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     // const user = useSelector(selectCurrentUser)
     const user = localStorage.getItem("user") ? localStorage.getItem("user") : null;
     const { data: userInfo } = useGetUserInfoQuery(user);
     const { data: property } = useGetPropertyQuery(id);
-    const { data: propertiesByUser } = useGetPropertiesByUserQuery(userInfo?._id);
+    const [getPropertiesByUser, { data: propertiesByUser }] = useLazyGetPropertiesByUserQuery();
+    const [getPropertiesbyCity, { data: filteredProperty }] = useLazyGetCityFilterQuery();
+    const [getPropertiesWithTitle, { data: filteredPropertyWithTitle }] = useLazyGetPropertiesWithTitleQuery()
 
-    const handleListing = (k) => {
+    const handleListing = async (k) => {
         if (k.split(" ")[1] === "Listings") {
+            await getPropertiesByUser(userInfo?._id);
             if (propertiesByUser) {
                 dispatch(setPropertyCount(propertiesByUser?.length));
                 dispatch(setProperties(propertiesByUser))
@@ -86,11 +89,12 @@ function Navbar() {
         }
     }
 
+
     const items = cities.map((city, index) => ({
         key: (index + 1).toString(),
         label: (
             <div
-                onClick={() => naviagte(`?city=${city}`)}
+                onClick={() => handleCityFilter(city)}
             >
                 {city}
             </div>
@@ -126,8 +130,26 @@ function Navbar() {
         </Menu>
     );
 
-    const handleSearch = () => {
+
+    const handleCityFilter = async (city) => {
+        naviagte(`?city=${city}`)
+        try {
+            await getPropertiesbyCity(city);
+            console.log("filteredProperty ----", filteredProperty);
+            dispatch(setProperties(filteredProperty));
+        } catch (error) {
+            console.error("Error fetching filtered properties:", error);
+        }
+    }
+
+    const handleSearch = async () => {
         naviagte(`?city=${queryCity}&title=${search}`)
+        try {
+            await getPropertiesWithTitle({ queryCity, search });
+            dispatch(setProperties(filteredPropertyWithTitle));
+        } catch (error) {
+            console.error("Error fetching filtered properties:", error);
+        }
     }
 
     return (

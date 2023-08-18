@@ -11,8 +11,7 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPropertyCount } from './features/countSlice';
-import { useLazyQuery } from "@reduxjs/toolkit/query/react"
-import { selectProperties, setProperties, useGetCityFilterQuery, useGetPropertiesQuery, useGetPropertiesWithTitleQuery, useGetSortedPropertiesQuery, useGetUserInfoQuery, useUpdatePropertiesTypeQuery } from './features/propertiesSlice';
+import { selectProperties, setProperties, useGetPropertiesQuery, useLazyGetPropertiesWithTitleQuery, useLazyGetSortedPropertiesQuery, useGetUserInfoQuery, useUpdatePropertiesTypeQuery } from './features/propertiesSlice';
 
 
 
@@ -30,9 +29,10 @@ function Properties() {
 
     const { data, isLoading, isError, error } = useGetPropertiesQuery();
     const allProperties = useSelector(selectProperties);
-    const { data: filteredProperty } = useGetCityFilterQuery(city)
-    const { data: filteredPropertyWithTitle } = useGetPropertiesWithTitleQuery({ city, title })
-    const { data: sortedData } = useGetSortedPropertiesQuery(checkedList);
+    // const [getPropertiesbyCity, { data: filteredProperty }] = useLaztGetCityFilterQuery();
+    // const { data: filteredPropertyWithTitle } = useGetPropertiesWithTitleQuery({ city, title })
+    // const [getPropertiesWithTitle, { data: filteredPropertyWithTitle }] = useLazyGetPropertiesWithTitleQuery()
+    const [getSortedProperties, { data: sortedData }] = useLazyGetSortedPropertiesQuery();
 
     const user = localStorage.getItem("user") ? localStorage.getItem("user") : null;
     const { data: userInfo } = useGetUserInfoQuery(user);
@@ -46,30 +46,30 @@ function Properties() {
         }
     }, [data])
 
-    useEffect(() => {
-        if (filteredProperty && city) {
-            dispath(setProperties(filteredProperty))
-        } else {
-            dispath(setProperties(data))
-        }
-    }, [filteredProperty])
+    // useEffect(() => {
+    //     if (filteredProperty && city) {
+    //         dispath(setProperties(filteredProperty))
+    //     } else {
+    //         dispath(setProperties(data))
+    //     }
+    // }, [filteredProperty])
 
-    useEffect(() => {
-        if (filteredPropertyWithTitle && title) {
-            dispath(setProperties(filteredPropertyWithTitle))
-        } else if (filteredProperty && city) {
-            dispath(setProperties(filteredProperty))
-        } else {
-            dispath(setProperties(data))
-        }
-    }, [filteredPropertyWithTitle])
+    // useEffect(() => {
+    //     if (filteredPropertyWithTitle && title) {
+    //         dispath(setProperties(filteredPropertyWithTitle))
+    //     } else if (filteredProperty && city) {
+    //         dispath(setProperties(filteredProperty))
+    //     } else {
+    //         dispath(setProperties(data))
+    //     }
+    // }, [filteredPropertyWithTitle])
 
-    useEffect(() => {
-        if (checkedList !== "relevance") {
-            dispath(setPropertyCount(data?.length));
-            dispath(setProperties(sortedData))
-        }
-    }, [checkedList])
+    // useEffect(() => {
+    //     if (checkedList !== "relevance") {
+    //         dispath(setPropertyCount(data?.length));
+    //         dispath(setProperties(sortedData))
+    //     }
+    // }, [checkedList])
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -80,19 +80,25 @@ function Properties() {
         return <div>{error.message}</div>
     }
 
-    const handleSortOption = (option) => {
+    const handleSortOption = async (option) => {
         if (option === "Relevance") {
             setCheckedList("relevance")
+            await getSortedProperties("relevance")
         } else if (option === "Posted On (Recent first)") {
             setCheckedList("recent")
+            await getSortedProperties("recent")
         } else if (option === "Posted On (Oldest first)") {
             setCheckedList("old")
+            await getSortedProperties("old")
         } else if (option === "Price (High to Low)") {
             setCheckedList("priceHighToLow")
+            await getSortedProperties("priceHighToLow")
         } else if (option === "Price (Low to High)") {
             setCheckedList("priceLowToHigh")
+            await getSortedProperties("priceLowToHigh")
         } else {
             setCheckedList("relevance")
+            await getSortedProperties("relevance")
         }
     }
 
