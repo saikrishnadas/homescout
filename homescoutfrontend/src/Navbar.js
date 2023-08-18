@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { setIsOpen } from './features/postPropertySlice';
 import { selectCurrentUser } from "./features/auth/authSlice";
 import { setIsOpenUpdate } from "./features/updatePropertySlice";
-import { setProperties, useLazyGetPropertiesByUserQuery, useGetPropertyQuery, useGetUserInfoQuery, useLazyGetCityFilterQuery, useLazyGetPropertiesWithTitleQuery } from "./features/propertiesSlice";
+import { setProperties, useLazyGetPropertiesByUserQuery, useGetPropertyQuery, useGetUserInfoQuery, useGetCityFilterQuery, useGetPropertiesWithTitleQuery } from "./features/propertiesSlice";
 import { setPropertyCount } from "./features/countSlice";
 
 
@@ -67,6 +67,7 @@ function Navbar() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const queryCity = queryParams.get('city');
+    const queryTitle = queryParams.get('title');
     const [search, setSearch] = useState("")
     const { id } = useParams()
 
@@ -74,19 +75,31 @@ function Navbar() {
     // const user = useSelector(selectCurrentUser)
     const user = localStorage.getItem("user") ? localStorage.getItem("user") : null;
     const { data: userInfo } = useGetUserInfoQuery(user);
-    const { data: property } = useGetPropertyQuery(id);
+    const { data: property } = useGetPropertyQuery(id, { skip: id === undefined });
     const [getPropertiesByUser, { data: propertiesByUser }] = useLazyGetPropertiesByUserQuery();
-    const [getPropertiesbyCity, { data: filteredProperty }] = useLazyGetCityFilterQuery();
-    const [getPropertiesWithTitle, { data: filteredPropertyWithTitle }] = useLazyGetPropertiesWithTitleQuery()
+    const { data: filteredProperty } = useGetCityFilterQuery(queryCity, { skip: queryCity === null });
+    const { data: filteredPropertyWithTitle } = useGetPropertiesWithTitleQuery({ queryCity, queryTitle }, { skip: queryTitle === null })
+
+    if (queryCity) {
+        if (filteredProperty) {
+            dispatch(setProperties(filteredProperty));
+        }
+    }
+
+    if (queryTitle) {
+        if (filteredPropertyWithTitle) {
+            dispatch(setProperties(filteredPropertyWithTitle));
+        }
+    }
 
     const handleListing = async (k) => {
-        if (k.split(" ")[1] === "Listings") {
-            await getPropertiesByUser(userInfo?._id);
-            if (propertiesByUser) {
-                dispatch(setPropertyCount(propertiesByUser?.length));
-                dispatch(setProperties(propertiesByUser))
-            }
-        }
+        // if (k.split(" ")[1] === "Listings") {
+        //     await getPropertiesByUser(userInfo?._id);
+        //     if (propertiesByUser) {
+        //         dispatch(setPropertyCount(propertiesByUser?.length));
+        //         dispatch(setProperties(propertiesByUser))
+        //     }
+        // }
     }
 
 
@@ -131,25 +144,23 @@ function Navbar() {
     );
 
 
+
     const handleCityFilter = async (city) => {
         naviagte(`?city=${city}`)
-        try {
-            await getPropertiesbyCity(city);
-            console.log("filteredProperty ----", filteredProperty);
-            dispatch(setProperties(filteredProperty));
-        } catch (error) {
-            console.error("Error fetching filtered properties:", error);
-        }
     }
 
+
     const handleSearch = async () => {
-        naviagte(`?city=${queryCity}&title=${search}`)
-        try {
-            await getPropertiesWithTitle({ queryCity, search });
-            dispatch(setProperties(filteredPropertyWithTitle));
-        } catch (error) {
-            console.error("Error fetching filtered properties:", error);
+        let queryString = ''
+        if (queryCity) {
+            queryString += `?city=${queryCity}`;
+            if (search.length > 0) {
+                queryString += `&title=${search}`;
+            }
+        } else if (search.length > 0) {
+            queryString += `?title=${search}`;
         }
+        naviagte(queryString)
     }
 
     return (

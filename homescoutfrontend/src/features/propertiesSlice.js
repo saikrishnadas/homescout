@@ -60,18 +60,20 @@ export const propertiesSlice = apiSlice.injectEndpoints({
         }),
         getCityFilter: builder.query({
             query: (city) => `/api/properties/filter?city=${city}`,
-            // providesTags: (result, error, city) => [{ type: 'CityData', city }]
+            providesTags: (result, error, city) => [{ type: 'CityData', city }]
         }),
         getPropertiesWithTitle: builder.query({
-            query: ({ city, title }) => {
+            query: ({ queryCity, queryTitle }) => {
+                console.log("queryCity", queryCity)
+                console.log("queryTitle", queryTitle)
                 let queryString = '/api/properties/filter';
-                if (city) {
-                    queryString += `?city=${city}`
-                    if (title) {
-                        queryString += `&title=${title}`;
+                if (queryCity) {
+                    queryString += `?city=${queryCity}`
+                    if (queryTitle) {
+                        queryString += `&title=${queryTitle}`;
                     }
-                } else if (title) {
-                    queryString += `?title=${title}`
+                } else if (queryTitle) {
+                    queryString += `?title=${queryTitle}`
                 }
                 return queryString;
             },
@@ -95,6 +97,6 @@ export const propertiesSlice = apiSlice.injectEndpoints({
     }),
 })
 
-export const { useGetPropertiesQuery, useGetPropertyQuery, useLazyGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery,
-    useCreatePropertyMutation, useUpdatePropertyMutation, useDeletePropertyMutation, useGetUserInfoQuery, useLazyGetCityFilterQuery,
-    useLazyGetPropertiesWithTitleQuery, useLazyGetSortedPropertiesQuery, useLazyGetPropertiesByUserQuery } = propertiesSlice;
+export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery,
+    useCreatePropertyMutation, useUpdatePropertyMutation, useDeletePropertyMutation, useGetUserInfoQuery, useGetCityFilterQuery,
+    useGetPropertiesWithTitleQuery, useGetSortedPropertiesQuery, useLazyGetPropertiesByUserQuery } = propertiesSlice;

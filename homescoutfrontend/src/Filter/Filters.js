@@ -8,50 +8,60 @@ import BudgetFilter from './BudgetFilter';
 import BrokerageFilter from './BrokerageFilter';
 import CarpetFilter from './CarpetFilter';
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from 'react-router-dom';
-import { setTypeFilter, setBhkFilter, setBudgetFilter, setCarpetAreaFilter, selectBhk, selectType } from '../features/filterSilce';
-import { setProperties, useGetFilterPropertiesQuery, useLazyGetFilterPropertiesQuery } from '../features/propertiesSlice';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { setTypeFilter, setBhkFilter, setBudgetFilter, setCarpetAreaFilter, selectBhk, selectType, setBathroomsFilter, selectBathrooms } from '../features/filterSilce';
+import { setProperties, useGetFilterPropertiesQuery } from '../features/propertiesSlice';
+import BathroomFilter from './BathroomFilter';
 
 
 
 function Filters() {
     const dispatch = useDispatch()
     const navigate = useNavigate();
-    const bhk = useSelector(selectBhk)
-    const type = useSelector(selectType);
+    const bhkState = useSelector(selectBhk);
+    const typeState = useSelector(selectType)
+    const bathroomState = useSelector(selectBathrooms);
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const bedrooms = Number(queryParams.get("bedrooms"));
+    const bathrooms = Number(queryParams.get("bathrooms"));
+    const propertyType = queryParams.get("type");
+    const { data: properties } = useGetFilterPropertiesQuery({ bedrooms, propertyType, bathrooms }, { skip: bedrooms === 0 && propertyType === null && bathrooms === 0 });
 
-    const [getProperties, { data: properties }] = useLazyGetFilterPropertiesQuery();
+    if (properties) {
+        dispatch(setProperties(properties))
+    }
 
 
     const handleFilter = async () => {
-        console.log(bhk)
-        console.log(type)
         let queryString = ""
-        let queryParams = {}
-        if (bhk) {
-            queryString += `?bedrooms=${bhk}`
-            queryParams.bedrooms = bhk;
-            if (type) {
-                queryString += `&type=${type}`
-                queryParams.type = type;
+        if (bhkState) {
+            queryString += `?bedrooms=${bhkState}`
+            if (typeState) {
+                queryString += `&type=${typeState}`
             }
-        } else if (type) {
-            queryString += `?type=${type}`
-            queryParams.type = type;
+            if (bathroomState) {
+                queryString += `&bathrooms=${bathroomState}`
+            }
+        } else if (typeState) {
+            queryString += `?type=${typeState}`
+            if (bathroomState) {
+                queryString += `&bathrooms=${bathroomState}`
+            }
+        } else if (bathroomState) {
+            queryString += `?bathrooms=${bathroomState}`
         } else {
             queryString = ""
-            queryParams = {}
         }
         navigate(queryString)
-        await getProperties(queryParams)
-        dispatch(setProperties(properties))
     }
 
     const handleReset = () => {
         dispatch(setBhkFilter([]))
         dispatch(setTypeFilter([]))
-        dispatch(setBudgetFilter({ min: "", max: "" }))
-        dispatch(setCarpetAreaFilter({ min: "", max: "" }))
+        dispatch(setBathroomsFilter([]))
+        // dispatch(setBudgetFilter({ min: "", max: "" }))
+        // dispatch(setCarpetAreaFilter({ min: "", max: "" }))
         navigate("/properties")
     }
 
@@ -60,9 +70,10 @@ function Filters() {
         <div className='filters-container'>
             <PropertyFilter />
             <BhkFilter />
-            <BudgetFilter />
+            <BathroomFilter />
+            {/* <BudgetFilter /> */}
             {/* <BrokerageFilter /> */}
-            <CarpetFilter />
+            {/* <CarpetFilter /> */}
             <div
                 className="apply-filter-botton"
                 onClick={handleFilter}

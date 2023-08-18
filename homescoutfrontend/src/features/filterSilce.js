@@ -5,6 +5,7 @@ const filterSlice = createSlice({
     initialState: {
         type: undefined,
         bhk: undefined,
+        bathrooms: undefined,
         budget: { min: "", max: "" },
         carpetArea: { min: "", max: "" }
     },
@@ -15,6 +16,9 @@ const filterSlice = createSlice({
         setBhkFilter: (state, action) => {
             state.bhk = action.payload;
         },
+        setBathroomsFilter: (state, action) => {
+            state.bathrooms = action.payload;
+        },
         setBudgetFilter: (state, action) => {
             state.budget = action.payload;
         },
@@ -24,9 +28,10 @@ const filterSlice = createSlice({
     }
 })
 
-export const { setTypeFilter, setBhkFilter, setBudgetFilter, setCarpetAreaFilter } = filterSlice.actions;
+export const { setTypeFilter, setBhkFilter, setBudgetFilter, setCarpetAreaFilter, setBathroomsFilter } = filterSlice.actions;
 
 export default filterSlice.reducer;
 
 export const selectType = (state) => state.filter.type;
 export const selectBhk = (state) => state.filter.bhk;
+export const selectBathrooms = (state) => state.filter.bathrooms;
