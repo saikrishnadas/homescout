@@ -43,7 +43,7 @@ export const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: 'Invalid Password' });
 
-        const accessToken = jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '60m' });
+        const accessToken = jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1m' });
         const refreshToken = jwt.sign({ email: user.email }, process.env.REFERSH_TOKEN_SECRET, { expiresIn: '1d' });
 
         // Save the refresh token with the current user

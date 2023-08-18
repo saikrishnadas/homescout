@@ -28,6 +28,7 @@ function App() {
   const storedToken = localStorage.getItem("accessToken");
   const storedUser = localStorage.getItem("user");
   if (storedToken) {
+
     dispatch(setCredentials({ user: storedUser, accessToken: storedToken }));
   }
   return (
