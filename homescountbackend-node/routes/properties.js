@@ -13,6 +13,7 @@ router.get("/:id", getProperty)
 router.post("/update/:id", updateProperty)
 router.delete("/delete/:id", deleteProperty)
 router.post("/getPropertiesByUser", getPropertiesByUser)
+
 // router.get("/updatePropertyType", updatePropertyType);
 
 export default router;

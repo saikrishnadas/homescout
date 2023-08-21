@@ -9,17 +9,24 @@ import { useQuery } from "react-query"
 import axios from 'axios';
 import { useParams } from "react-router-dom"
 import moment from 'moment'
-import { useGetPropertyQuery, useGetUserInfoQuery, useUpdatePropertyMutation } from './features/propertiesSlice';
+import { useGetContactMutation, useGetPropertyQuery, useGetUserInfoQuery, useUpdatePropertyMutation } from './features/propertiesSlice';
 import UpdatePropertyModal from './UpdatePropertyModal';
 import { useEffect } from 'react';
 import BuildingImage from "./images/bImage.jpeg"
 
 function Detail() {
     const { id } = useParams();
+    const [fullName, setFullName] = useState(null);
+    const [email, setEmail] = useState(null);
+    const [phoneNumber, setPhoneNumber] = useState(null);
+    const [allowContact, setAllowContact] = useState(false);
+    const [painting, setPainting] = useState(false);
+    const [design, setDesign] = useState(false);
 
     const { data, isLoading, isError, error } = useGetPropertyQuery(id, { skip: id === undefined });
     const user = localStorage.getItem("user") ? localStorage.getItem("user") : null;
     const { data: userInfo } = useGetUserInfoQuery(user);
+    const [getContact, { data: contactDetails, isSuccess }] = useGetContactMutation()
 
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -35,7 +42,26 @@ function Detail() {
         return <div>{error.message}</div>
     }
 
-    console.log("Detail page:", data)
+    const handleContact = async () => {
+        const contactData = {
+            fullName,
+            email,
+            phoneNumber,
+            allowContact,
+            painting,
+            design
+        }
+        await getContact(contactData)
+        if (isSuccess) {
+            setFullName(null)
+            setEmail(null)
+            setAllowContact(false)
+            setPainting(false)
+            setDesign(false)
+        }
+    }
+
+
 
     return (
         <div>
@@ -105,21 +131,22 @@ function Detail() {
                         <div className='form-under'>
                             <span style={{ fontSize: "18px" }}>View Contact Details</span>
                             <div className='user-details'>
-                                <input placeholder='Name' style={{ height: "30px", width: "60%" }} />
-                                <input placeholder='Email' style={{ height: "30px", width: "60%" }} />
-                                <input placeholder='Phone Number' style={{ height: "30px", width: "60%" }} />
+                                <input placeholder='Name' style={{ height: "30px", width: "60%" }} value={fullName} onChange={(e) => { setFullName(e.target.value) }} />
+                                <input placeholder='Email' style={{ height: "30px", width: "60%" }} value={email} onChange={(e) => { setEmail(e.target.value) }} />
+                                <input placeholder='Phone Number' style={{ height: "30px", width: "60%" }} value={phoneNumber} onChange={(e) => { setPhoneNumber(e.target.value) }} />
                             </div>
                             <div>
-                                <Checkbox>Allow other agents to contact me</Checkbox>
+                                <Checkbox value={allowContact} onChange={(e) => { setAllowContact(e.target.checked) }}>Allow other agents to contact me</Checkbox>
                             </div>
                             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                                 <span>I am looking for</span>
-                                <Checkbox  >Painting Service</Checkbox>
-                                <Checkbox  >Interior Design Service</Checkbox>
+                                <Checkbox value={painting} onChange={(e) => { setPainting(e.target.checked) }}>Painting Service</Checkbox>
+                                <Checkbox value={design} onChange={(e) => { setDesign(e.target.checked) }}>Interior Design Service</Checkbox>
                             </div>
                             <div
                                 className="post-property-botton"
                                 style={{ backgroundColor: "orange" }}
+                                onClick={handleContact}
                             >
                                 <span
                                     className="post-property-botton-text"

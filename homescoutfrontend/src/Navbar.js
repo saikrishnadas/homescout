@@ -97,7 +97,7 @@ function Navbar() {
     }
 
     const handleListing = async (k) => {
-        if (k === "View Listings") {
+        if (k.split(" ")[1] === "Listings") {
             await getPropertiesByUser(userInfo?._id);
             if (propertiesByUser) {
                 dispatch(setPropertyCount(propertiesByUser?.length));

@@ -15,8 +15,8 @@ import { corsOptions } from "./config/corsOptions.js";
 
 import { register } from "./controllers/auth.js";
 import propertyRoute from "./routes/properties.js";
+import contactRoute from "./routes/contact.js";
 import authRoute from "./routes/auth.js";
-import { createProperty } from "./controllers/properties.js";
 
 dotenv.config();
 const app = express();
@@ -46,6 +46,7 @@ app.use("/assets", express.static(path.join(__dirname, "public/assets")))
 app.post("/api/auth/register", register);
 app.use("/api/auth", authRoute);
 app.use("/api/properties", propertyRoute);
+app.use("/api/contact", contactRoute);
 
 
 mongoose.connection.once('open', () => {
