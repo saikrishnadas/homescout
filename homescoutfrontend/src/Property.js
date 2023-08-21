@@ -31,10 +31,11 @@ function Property({ id, title, rent, carpetArea, bedrooms, bathrooms, parking, p
                     {/* Image */}
                     <img className='top-image-image' src={BuildingImage} />
                 </div>
+
                 <div className='top-details'>
                     <div className='top-title'>
                         <span style={{ display: "flex", alignItems: "center" }}><span style={{ fontWeight: "bold" }}>{title}</span>{" "}{userInfo?._id == listedBy && <span style={{ marginLeft: "10px" }} onClick={handleDeleteProperty}><AiFillDelete /></span>}</span>
-                        <span style={{ fontWeight: "bold", fontSize: "24px" }}>₹ {rent}</span>
+                        <span style={{ fontWeight: "bold", fontSize: "20px" }}>₹ {rent}</span>
                     </div>
                     <div className='top-carpet'>
                         <div className='top-carpert-container'><div className='top-carpet-text'>Carpet area</div><div style={{ fontWeight: "bold" }}>{carpetArea} sq.ft</div></div>
@@ -46,7 +47,7 @@ function Property({ id, title, rent, carpetArea, bedrooms, bathrooms, parking, p
             </div>
             <div className='bottom-container'>
                 {/* Bottom */}
-                <div style={{ fontSize: "14px", color: "grey" }}>
+                <div className='bottom-container-desc' style={{ fontSize: "14px", color: "grey" }}>
                     {propertyDescription}
                 </div>
                 <div className='bottom-right-container'>

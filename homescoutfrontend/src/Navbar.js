@@ -186,7 +186,7 @@ function Navbar() {
             <CityModal />
             <PostPropertyModal />
             <div className="navbar-left" onClick={() => naviagte("/properties")}>
-                <div>
+                <div className="company-logo-logo">
                     <GiFamilyHouse style={{ color: "white", fontSize: "30px" }} />
                 </div>
                 <div className="company-logo">HOMESCOUT</div>

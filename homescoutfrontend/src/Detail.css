@@ -109,3 +109,54 @@
 	display: flex;
 	flex-direction: column;
 }
+.small-screen-title {
+	display: none;
+}
+
+@media (max-width: 768px) {
+	.detail-container {
+		padding-left: 4%;
+		display: flex;
+		flex-direction: column;
+	}
+	.overview-container {
+		flex-direction: column;
+		height: 100%;
+		width: 100%;
+	}
+
+	.user-form {
+		width: 90%;
+		height: 100%;
+		align-items: center;
+	}
+	.user-details {
+		width: 120%;
+	}
+	.post-property-botton {
+		margin-left: 20px;
+		margin-bottom: 10px;
+	}
+	.overview-sqft {
+		margin-top: 10px;
+		width: 150%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+	}
+
+	.overview-area-wrap {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.overview-area-wrap-inner {
+		display: flex;
+		flex-direction: row;
+		gap: 20px;
+	}
+	.small-screen-title {
+		display: block;
+	}
+}

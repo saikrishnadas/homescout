@@ -63,7 +63,6 @@ function Filters() {
         // dispatch(setBudgetFilter({ min: "", max: "" }))
         // dispatch(setCarpetAreaFilter({ min: "", max: "" }))
         navigate("/properties")
-        window.location.reload();
     }
 
 

@@ -117,3 +117,17 @@
 	font-weight: bold;
 	user-select: none;
 }
+
+.filters-container-buttons {
+	display: flex;
+}
+
+.filters-container-filters {
+	display: flex;
+}
+
+@media (max-width: 768px) {
+	.filters-container {
+		display: none;
+	}
+}

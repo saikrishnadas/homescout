@@ -80,3 +80,53 @@ input[type="text"] {
 	color: white;
 	font-weight: bold;
 }
+
+@media (max-width: 768px) {
+	.company-logo-logo {
+		margin-top: 5px;
+	}
+	.company-logo {
+		color: white;
+		font-weight: bold;
+		letter-spacing: 2px;
+		margin-top: 5px;
+	}
+
+	.navbar-container {
+		height: auto;
+		flex-direction: column;
+		padding-bottom: 10px;
+	}
+
+	.navbar-left {
+		margin-bottom: 10px;
+	}
+
+	.search-container {
+		margin-top: 10px;
+	}
+
+	input[type="text"] {
+		width: 100%;
+	}
+
+	.search-submit-button {
+		margin-top: 10px;
+	}
+
+	.location-change-menu {
+		width: 100%;
+		border-radius: 2px;
+		margin-top: 0px;
+	}
+
+	.post-property-botton {
+		width: 100%;
+		margin-top: 10px;
+	}
+
+	.search-submit-button {
+		margin-top: 0px;
+		border-radius: 2px;
+	}
+}

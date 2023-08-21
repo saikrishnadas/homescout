@@ -89,3 +89,39 @@
 .bottom-right-botton:hover {
 	background-color: rgba(255, 166, 0, 0.788);
 }
+
+@media (max-width: 768px) {
+	.property-container {
+		width: 86%;
+	}
+	.top-image {
+		display: none;
+		width: 80px;
+		height: 80px;
+	}
+
+	.top-image-image {
+		display: none;
+		width: 80px;
+		height: 80px;
+	}
+	.property-top-container {
+		/* flex-direction: column; */
+	}
+
+	.top-title {
+		width: 80%;
+	}
+
+	.top-carpet {
+		margin: 0px;
+	}
+	.bottom-container-desc {
+		display: none;
+	}
+	.bottom-right-botton {
+		width: 150px;
+		margin-top: 10px;
+		margin-left: 80px;
+	}
+}

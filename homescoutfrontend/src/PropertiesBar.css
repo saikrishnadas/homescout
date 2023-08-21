@@ -58,3 +58,38 @@
 .property-count-botton-text:hover {
 	color: white;
 }
+
+@media (max-width: 768px) {
+	.propertiesbar-container {
+		padding: 0% 0%;
+	}
+
+	.view-properites-container {
+		margin-top: 10px;
+	}
+
+	.property-count-botton,
+	.property-count-botton-selected {
+		width: 100%;
+		margin-top: 10px;
+	}
+
+	.property-count-botton-selected {
+		background-color: #37a5a9;
+		border-top: 2px solid #015e62;
+	}
+
+	.property-count-botton-text,
+	.property-count-botton-text-selected {
+		text-align: center;
+	}
+
+	.property-count-botton:hover {
+		background-color: #37a5a9;
+		border-top: 2px solid #015e62;
+	}
+
+	.property-count-botton-text:hover {
+		color: white;
+	}
+}

@@ -86,7 +86,7 @@ function Detail() {
                             </div>
                             <div className='overview-sqft'>
                                 {/* Sq ft area */}
-                                <span style={{ marginLeft: "20px", fontWeight: "bold", fontSize: "20px" }}>₹{data?.rent}</span>
+                                <span className='small-screen-title'>Rent</span><span style={{ marginLeft: "20px", fontWeight: "bold", fontSize: "20px" }}>₹{data?.rent}</span>
                                 <div className='overview-area-wrap'>
                                     <div className='overview-area-wrap-inner'><span style={{ color: "grey" }}>Super Built-Up Area</span><span style={{ fontWeight: "bold" }}>{data?.buildUpArea} Sq.Ft</span></div>
                                     <div className='overview-area-wrap-inner'><span style={{ color: "grey" }}>Carpet Area</span><span style={{ fontWeight: "bold" }}>{data?.carpetArea} Sq.Ft</span></div>

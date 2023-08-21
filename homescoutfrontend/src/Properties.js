@@ -96,7 +96,7 @@ function Properties() {
             <Filters />
             <div className='properties-container'>
                 <div className='properties-sort-container'>
-                    <span>{allProperties?.length} - Apartments, Houses For Rent {city && `In ${city}`}</span>
+                    <span className='properties-sort-text-large'>{allProperties?.length} - Apartments, Houses For Rent {city && `In ${city}`}</span>
                     <div className='properties-sort-button'>
                         <span>Sort by: </span>
                         <Dropdown overlay={menu} trigger={['click']}>
