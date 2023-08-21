@@ -16,6 +16,7 @@ import { corsOptions } from "./config/corsOptions.js";
 import { register } from "./controllers/auth.js";
 import propertyRoute from "./routes/properties.js";
 import authRoute from "./routes/auth.js";
+import { createProperty } from "./controllers/properties.js";
 
 dotenv.config();
 const app = express();
@@ -40,21 +41,9 @@ app.use(cors(corsOptions));
 app.use(cookieParser())
 app.use("/assets", express.static(path.join(__dirname, "public/assets")))
 
-//File Storage
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "public/assets");
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    }
-});
-const upload = multer({ storage });
-
-// Routes with files
-app.post("/api/auth/register", upload.single("picture"), register);
 
 // Routes
+app.post("/api/auth/register", register);
 app.use("/api/auth", authRoute);
 app.use("/api/properties", propertyRoute);
 

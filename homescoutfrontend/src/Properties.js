@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Filters from './Filter/Filters'
 import Navbar from './Navbar'
 import PropertiesBar from './PropertiesBar'
-import { Dropdown } from 'antd';
+import { Dropdown, Spin } from 'antd';
 import { AiOutlineCaretDown } from "react-icons/ai";
 import "./Properties.css"
 import Property from './Property';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPropertyCount } from './features/countSlice';
 import { selectProperties, setProperties, useGetPropertiesQuery, useGetSortedPropertiesQuery, useGetUserInfoQuery } from './features/propertiesSlice';
@@ -15,6 +15,7 @@ import { selectProperties, setProperties, useGetPropertiesQuery, useGetSortedPro
 
 function Properties() {
     const [checkedList, setCheckedList] = useState("relevance")
+    const navigate = useNavigate();
 
     const dispath = useDispatch()
     const location = useLocation();
@@ -33,6 +34,11 @@ function Properties() {
     const { data: userInfo } = useGetUserInfoQuery(user);
 
     useEffect(() => {
+        // Redirect to "/properties" when the root path ("/") is accessed
+        navigate('/properties');
+    }, [navigate]);
+
+    useEffect(() => {
         if (data) {
             dispath(setPropertyCount(data?.length));
             dispath(setProperties(data))
@@ -47,8 +53,9 @@ function Properties() {
     }, [checkedList])
 
     if (isLoading) {
-        return <div>Loading...</div>
+        return <div style={{ display: "flex", justifyContent: "center", alignItem: "center" }}><Spin size="large" /></div>
     }
+
 
 
     if (isError) {
@@ -89,7 +96,7 @@ function Properties() {
             <Filters />
             <div className='properties-container'>
                 <div className='properties-sort-container'>
-                    <span>{allProperties?.length} - Apartments, Flats For Rent {city && `In ${city}`}</span>
+                    <span>{allProperties?.length} - Apartments, Houses For Rent {city && `In ${city}`}</span>
                     <div className='properties-sort-button'>
                         <span>Sort by: </span>
                         <Dropdown overlay={menu} trigger={['click']}>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Filters from './Filter/Filters'
 import Navbar from './Navbar'
 import PropertiesBar from './PropertiesBar'
-import { Dropdown, Checkbox, Button } from 'antd';
+import { Dropdown, Spin } from 'antd';
 import { AiOutlineCaretDown } from "react-icons/ai";
 import "./Properties.css"
 import Property from './Property';
@@ -23,7 +23,7 @@ function Projects() {
     const { isLoading, data, isError, error } = useQuery("properties", fetchProperties)
 
     if (isLoading) {
-        return <div>Loading...</div>
+        return <div style={{ display: "flex", justifyContent: "center", alignItem: "center" }}><Spin size="large" /></div>
     }
 
 

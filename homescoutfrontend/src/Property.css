@@ -23,6 +23,12 @@
 	width: 150px;
 	height: 150px;
 }
+
+.top-image-image {
+	width: 150px;
+	height: 150px;
+}
+
 .top-details {
 	display: flex;
 	flex-direction: column;
@@ -77,6 +83,7 @@
 	justify-content: center;
 	box-shadow: 1px 2px 4px #8888888e;
 	cursor: pointer;
+	margin-left: 10px;
 }
 
 .bottom-right-botton:hover {

@@ -22,7 +22,7 @@ export const getAllProperties = async (req, res) => {
 export const createProperty = async (req, res) => {
     try {
         const { title, propertyType, rent, buildUpArea, carpetArea, bedrooms, bathrooms, parking, listedBy, bachelorsAllowed, securityDeposit, petAllowed, nonVegetarian, propertyDescription, city, state, country, location } = req.body;
-        const newProperty = new Property({
+        const newPropertyData = {
             title,
             propertyType,
             rent,
@@ -41,8 +41,10 @@ export const createProperty = async (req, res) => {
             state,
             country,
             location
-        })
+        };
+        const newProperty = new Property(newPropertyData);
         await newProperty.save();
+
         res.status(201).json(newProperty);
     } catch (error) {
         res.status(500).json({ error: error.message })

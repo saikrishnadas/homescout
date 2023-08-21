@@ -10,9 +10,12 @@
 	display: flex;
 	align-items: center;
 	gap: 10px;
+	cursor: pointer;
 }
 .company-logo {
 	color: white;
+	font-weight: bold;
+	letter-spacing: 2px;
 }
 
 .search-container {

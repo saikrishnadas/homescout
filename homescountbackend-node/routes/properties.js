@@ -10,9 +10,9 @@ router.post("/create", createProperty)
 router.get("/filter", filterProperties);
 router.post("/sort", sortProperties);
 router.get("/:id", getProperty)
-router.post("/update/:id", verifyToken, updateProperty)
-router.delete("/delete/:id", verifyToken, deleteProperty)
-router.post("/getPropertiesByUser", verifyToken, getPropertiesByUser)
+router.post("/update/:id", updateProperty)
+router.delete("/delete/:id", deleteProperty)
+router.post("/getPropertiesByUser", getPropertiesByUser)
 // router.get("/updatePropertyType", updatePropertyType);
 
 export default router;

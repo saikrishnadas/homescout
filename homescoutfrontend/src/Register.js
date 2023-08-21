@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom";
 import { useRegisterMutation } from './features/auth/authApiSlice';
+import "./Register.css"
 
 function RegisterPage() {
 
@@ -19,6 +20,17 @@ function RegisterPage() {
     const navigate = useNavigate();
 
     const [register, { isLoading }] = useRegisterMutation();
+
+
+    const userName = localStorage.getItem("user") ? localStorage.getItem("user") : null
+    const token = localStorage.getItem("accessToken") ? localStorage.getItem("accessToken") : null
+
+    useEffect(() => {
+        if (token && userName) {
+
+            navigate("/properties")
+        }
+    }, [])
 
     useEffect(() => {
         userRef.current.focus();
@@ -77,73 +89,96 @@ function RegisterPage() {
         <>
             {isLoading ? <h1>Loading...</h1> : <section className="register">
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                <div className="register-form">
+                    <div className='register-heading'>Seamless Rental Experience Awaits</div>
+                    <div className='register-heading-sub'>Register for Rentals Now</div>
+                    <form onSubmit={handleRegister}>
+                        <div className='register-div'>
+                            <label htmlFor="firstName" className="label-register">First Name:</label>
+                            <input
+                                className="input-register"
+                                // type="text"
+                                id="firstName"
+                                placeholder="Enter the first name"
+                                ref={userRef}
+                                value={firstName}
+                                onChange={handleFirstInput}
+                                autoComplete="off"
+                                required
+                            />
+                        </div>
+                        <div className='register-div'>
+                            <label htmlFor="lastName" className="label-register">Last Name:</label>
+                            <input
+                                className="input-register"
+                                // type="text"
+                                id="lastName"
+                                placeholder="Enter the last name"
+                                value={lastName}
+                                onChange={handleLastInput}
+                                autoComplete="off"
+                                required
+                            />
+                        </div>
+                        <div className='register-div'>
+                            <label htmlFor="email" className="label-register">Email:</label>
+                            <input
+                                className="input-register"
+                                // type="text"
+                                id="email"
+                                placeholder="Enter the email"
+                                value={user}
+                                onChange={handleUserInput}
+                                autoComplete="off"
+                                required
+                            />
+                        </div>
+                        <div className='register-div'>
+                            <label htmlFor="phone" className="label-register">Phone:</label>
+                            <input
+                                className="input-register"
+                                // type="text"
+                                id="phone"
+                                placeholder="Enter the phone number"
+                                onChange={handlePhoneInput}
+                                value={phone}
+                                required
+                            />
+                        </div>
+                        <div className='register-div'>
+                            <label htmlFor="password" className="label-register">Password:</label>
+                            <input
+                                className="input-register"
+                                type="password"
+                                id="password"
+                                placeholder="Enter the password"
+                                onChange={handlePwdInput}
+                                value={pwd}
+                                required
+                            />
+                        </div>
+                        <div className='register-div'>
 
-                <form onSubmit={handleRegister}>
-                    <label htmlFor="firstName">First Name:</label>
-                    <input
-                        type="text"
-                        id="firstName"
-                        placeholder="Enter the first name"
-                        ref={userRef}
-                        value={firstName}
-                        onChange={handleFirstInput}
-                        autoComplete="off"
-                        required
-                    />
-
-                    <label htmlFor="lastName">Last Name:</label>
-                    <input
-                        type="text"
-                        id="lastName"
-                        placeholder="Enter the last name"
-                        value={lastName}
-                        onChange={handleLastInput}
-                        autoComplete="off"
-                        required
-                    />
-
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="text"
-                        id="email"
-                        placeholder="Enter the email"
-                        value={user}
-                        onChange={handleUserInput}
-                        autoComplete="off"
-                        required
-                    />
-
-                    <label htmlFor="phone">Phone:</label>
-                    <input
-                        type="text"
-                        id="phone"
-                        placeholder="Enter the phone number"
-                        onChange={handlePhoneInput}
-                        value={phone}
-                        required
-                    />
-
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Enter the password"
-                        onChange={handlePwdInput}
-                        value={pwd}
-                        required
-                    />
-
-                    <label htmlFor="password">Confirm Password:</label>
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        placeholder="Re-enter the password"
-                        onChange={handleConfirmPwdInput}
-                        value={confirmPwd}
-                        required
-                    />
-                    <button type='submit'>Register</button>
-                </form>
+                            <label htmlFor="password" className="label-register">Confirm Password:</label>
+                            <input
+                                className="input-register"
+                                type="password"
+                                id="confirmPassword"
+                                placeholder="Re-enter the password"
+                                onChange={handleConfirmPwdInput}
+                                value={confirmPwd}
+                                required
+                            />
+                        </div>
+                        <button type='submit'>Register</button>
+                        <span className="register-message">
+                            <p style={{ color: "black", marginRight: "10px" }}>Do you have an account?</p>{" "}
+                            <div onClick={() => navigate('/login')}>
+                                <p style={{ color: "#2d66f7", textDecoration: "underline", cursor: "pointer" }}>Login</p>
+                            </div>
+                        </span>
+                    </form>
+                </div>
             </section>}
         </>
     )

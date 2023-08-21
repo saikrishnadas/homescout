@@ -17,6 +17,10 @@
 	margin-top: 20px;
 }
 
+.overview-image-image {
+	height: 280px;
+}
+
 .overview-right-detail {
 	display: flex;
 	flex-direction: column;
