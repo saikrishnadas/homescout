@@ -1,8 +1,8 @@
 .property-container {
 	border: 1px solid #37a5a9;
 	width: 1000px;
-	height: 200px;
-	padding: 18px;
+	height: 260px;
+	padding: 20px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -11,7 +11,7 @@
 
 .property-container:hover {
 	box-shadow: 0.5px 0.5px 2px;
-	padding: 20px;
+	padding: 22px;
 }
 
 .property-top-container {
