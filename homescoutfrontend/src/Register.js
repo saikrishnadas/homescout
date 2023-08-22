@@ -28,7 +28,7 @@ function RegisterPage() {
     useEffect(() => {
         if (token && userName) {
 
-            navigate("/properties")
+            navigate("/")
         }
     }, [])
 

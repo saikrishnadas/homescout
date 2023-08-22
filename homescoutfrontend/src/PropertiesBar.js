@@ -17,7 +17,7 @@ function PropertiesBar() {
     return (
         <div className='propertiesbar-container'>
             <div className='propertiesbar-selector'>
-                <div className={selected === 0 ? `property-count-botton-selected` : `property-count-botton`} onClick={() => { handleSelected(0); navigate("/properties") }}>
+                <div className={selected === 0 ? `property-count-botton-selected` : `property-count-botton`} onClick={() => { handleSelected(0); navigate("/") }}>
                     <span className={selected === 0 ? `property-count-botton-text-selected` : `property-count-botton-text`} >{`PROPERTIES (${count})`}</span>
                 </div>
                 <div className={selected === 1 ? `property-count-botton-selected` : `property-count-botton`} onClick={() => { handleSelected(1); navigate("/projects") }}>

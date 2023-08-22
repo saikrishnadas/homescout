@@ -23,7 +23,7 @@ function LoginPage() {
     useEffect(() => {
         if (token && userName) {
 
-            navigate("/properties")
+            navigate("/")
         }
     }, [])
 
@@ -43,7 +43,7 @@ function LoginPage() {
             dispatch(setCredentials({ ...userData, user }))
             setUser('')
             setPwd('')
-            navigate('/properties')
+            navigate('/')
         } catch (err) {
             if (!err?.originalStatus) {
                 // isLoading: true until timeout occurs

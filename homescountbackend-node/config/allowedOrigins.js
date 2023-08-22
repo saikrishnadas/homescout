@@ -1,3 +1,4 @@
 export const allowedOrigins = [
-    'https://homescout.onrender.com'
+    'https://homescout.onrender.com',
+    'http://localhost:3000'
 ];

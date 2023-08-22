@@ -16,7 +16,7 @@ function Property({ id, title, rent, carpetArea, bedrooms, bathrooms, parking, p
     const { data: userInfo } = useGetUserInfoQuery(user);
 
     const handleNavigation = () => {
-        navigate("/properties/" + id)
+        navigate("/" + id)
     }
     const handleDeleteProperty = async () => {
         await deleteProperty(id);
