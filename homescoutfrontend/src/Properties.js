@@ -33,10 +33,10 @@ function Properties() {
     const user = localStorage.getItem("user") ? localStorage.getItem("user") : null;
     const { data: userInfo } = useGetUserInfoQuery(user);
 
-    useEffect(() => {
-        // Redirect to "/properties" when the root path ("/") is accessed
-        navigate('/properties');
-    }, [navigate]);
+    // useEffect(() => {
+    //     // Redirect to "/properties" when the root path ("/") is accessed
+    //     navigate('/properties');
+    // }, [navigate]);
 
     useEffect(() => {
         if (data) {

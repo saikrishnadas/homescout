@@ -37,12 +37,12 @@ function App() {
         <Route path="/" element={<Layout />}>
           {/* Public Routes */}
           <Route index element={<Properties />} />
+          <Route path="/:id" element={<Detail />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="projects" element={<Projects />} />
           <Route path="pro" element={<Pro />} />
-          <Route path="properties" element={<Properties />} />
-          <Route path="properties/:id" element={<Detail />} />
+          {/* <Route path="properties" element={<Properties />} /> */}
 
           {/* Protected Routes */}
           <Route element={<RequireAuth />}>

@@ -109,7 +109,7 @@ function Navbar() {
             handleLogout();
             localStorage.removeItem("user");
             localStorage.removeItem("accessToken");
-            naviagte("/properties")
+            naviagte("/")
         }
     }
 
@@ -185,7 +185,7 @@ function Navbar() {
         >
             <CityModal />
             <PostPropertyModal />
-            <div className="navbar-left" onClick={() => naviagte("/properties")}>
+            <div className="navbar-left" onClick={() => naviagte("/")}>
                 <div className="company-logo-logo">
                     <GiFamilyHouse style={{ color: "white", fontSize: "30px" }} />
                 </div>

@@ -62,7 +62,7 @@ function Filters() {
         dispatch(setBathroomsFilter([]))
         // dispatch(setBudgetFilter({ min: "", max: "" }))
         // dispatch(setCarpetAreaFilter({ min: "", max: "" }))
-        navigate("/properties")
+        navigate("/")
     }
 
 
