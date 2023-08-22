@@ -30,3 +30,15 @@
 	border-bottom: 2px solid #37a5a9;
 	user-select: none;
 }
+
+@media (max-width: 768px) {
+	.properties-container {
+		padding: 0;
+	}
+	.properties-sort-text-large {
+		display: none;
+	}
+	.properties-sort-button {
+		margin-top: 10px;
+	}
+}

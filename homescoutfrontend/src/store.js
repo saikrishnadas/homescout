@@ -18,6 +18,7 @@ const store = configureStore({
         updateProperty: updatePropertySlice
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice.middleware), //This middleware is need to make RTK query
+    devTools: false
 });
 
 export default store;

@@ -12,10 +12,14 @@ import CityModal from "./CityModal";
 import PostPropertyModal from "./PostPropertyModal";
 import { useDispatch, useSelector } from "react-redux"
 import { setIsOpen } from './features/postPropertySlice';
-import { selectCurrentUser } from "./features/auth/authSlice";
+import { logOut, selectCurrentUser } from "./features/auth/authSlice";
 import { setIsOpenUpdate } from "./features/updatePropertySlice";
 import { setProperties, useLazyGetPropertiesByUserQuery, useGetPropertyQuery, useGetUserInfoQuery, useGetCityFilterQuery, useGetPropertiesWithTitleQuery } from "./features/propertiesSlice";
 import { setPropertyCount } from "./features/countSlice";
+import {
+    GiFamilyHouse
+} from "react-icons/gi";
+
 
 
 
@@ -93,13 +97,20 @@ function Navbar() {
     }
 
     const handleListing = async (k) => {
-        // if (k.split(" ")[1] === "Listings") {
-        //     await getPropertiesByUser(userInfo?._id);
-        //     if (propertiesByUser) {
-        //         dispatch(setPropertyCount(propertiesByUser?.length));
-        //         dispatch(setProperties(propertiesByUser))
-        //     }
-        // }
+        if (k.split(" ")[1] === "Listings") {
+            await getPropertiesByUser(userInfo?._id);
+            if (propertiesByUser) {
+                dispatch(setPropertyCount(propertiesByUser?.length));
+                dispatch(setProperties(propertiesByUser))
+            }
+        }
+
+        if (k === "Logout") {
+            handleLogout();
+            localStorage.removeItem("user");
+            localStorage.removeItem("accessToken");
+            naviagte("/properties")
+        }
     }
 
 
@@ -163,18 +174,23 @@ function Navbar() {
         naviagte(queryString)
     }
 
+    const handleLogout = () => {
+        dispatch(logOut())
+        naviagte("/login")
+    }
+
     return (
         <div
             className="navbar-container"
         >
             <CityModal />
             <PostPropertyModal />
-            <div className="navbar-left">
-                <div>
-                    <GoThreeBars style={{ color: "white", fontSize: "30px" }} />
+            <div className="navbar-left" onClick={() => naviagte("/properties")}>
+                <div className="company-logo-logo">
+                    <GiFamilyHouse style={{ color: "white", fontSize: "30px" }} />
                 </div>
-                <div className="company-logo">LOGO</div>
-            </div>
+                <div className="company-logo">HOMESCOUT</div>
+            </div >
             <div>
                 <div className="search-container">
                     <Dropdown trigger={["click"]} overlay={menu} placement="bottomLeft">
@@ -198,7 +214,7 @@ function Navbar() {
                 </div>
             </div>
             <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
                     {user ? <> <Dropdown trigger={["click"]} overlay={profileMenu} placement="bottomLeft">
                         <div>
                             <GoPerson style={{ color: "white", fontSize: "24px" }} />

@@ -93,10 +93,17 @@ export const propertiesSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: { userId }
             })
-        })
+        }),
+        getContact: builder.mutation({
+            query: contactData => ({
+                url: '/api/contact/getContact',
+                method: 'POST',
+                body: contactData
+            })
+        }),
     }),
 })
 
 export const { useGetPropertiesQuery, useGetPropertyQuery, useGetFilterPropertiesQuery, useUpdatePropertiesTypeQuery,
     useCreatePropertyMutation, useUpdatePropertyMutation, useDeletePropertyMutation, useGetUserInfoQuery, useGetCityFilterQuery,
-    useGetPropertiesWithTitleQuery, useGetSortedPropertiesQuery, useLazyGetPropertiesByUserQuery } = propertiesSlice;
+    useGetPropertiesWithTitleQuery, useGetSortedPropertiesQuery, useLazyGetPropertiesByUserQuery, useGetContactMutation } = propertiesSlice;

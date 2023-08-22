@@ -36,9 +36,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* Public Routes */}
-          <Route index element={<Properties />} >
-
-          </Route>
+          <Route index element={<Properties />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="projects" element={<Projects />} />

@@ -68,6 +68,7 @@ function PostPropertyModal() {
     const [deposit, setDeposit] = useState("")
     const [desc, setDesc] = useState("")
     const [bath, setBath] = useState(0)
+    const [selectedFile, setSelectedFile] = useState(null);
 
     const dispatch = useDispatch()
 

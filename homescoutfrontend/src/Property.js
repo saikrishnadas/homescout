@@ -6,6 +6,7 @@ import {
     AiFillDelete,
 } from "react-icons/ai";
 import { useDeletePropertyMutation, useGetUserInfoQuery } from './features/propertiesSlice';
+import BuildingImage from "./images/bImage.jpeg"
 
 function Property({ id, title, rent, carpetArea, bedrooms, bathrooms, parking, propertyDescription, listedBy, listedOn }) {
     const navigate = useNavigate();
@@ -27,12 +28,14 @@ function Property({ id, title, rent, carpetArea, bedrooms, bathrooms, parking, p
             <div className='property-top-container'>
                 {/* Top */}
                 <div className='top-image'>
-                    Image
+                    {/* Image */}
+                    <img className='top-image-image' src={BuildingImage} />
                 </div>
+
                 <div className='top-details'>
                     <div className='top-title'>
                         <span style={{ display: "flex", alignItems: "center" }}><span style={{ fontWeight: "bold" }}>{title}</span>{" "}{userInfo?._id == listedBy && <span style={{ marginLeft: "10px" }} onClick={handleDeleteProperty}><AiFillDelete /></span>}</span>
-                        <span style={{ fontWeight: "bold", fontSize: "24px" }}>₹ {rent}</span>
+                        <span style={{ fontWeight: "bold", fontSize: "20px" }}>₹ {rent}</span>
                     </div>
                     <div className='top-carpet'>
                         <div className='top-carpert-container'><div className='top-carpet-text'>Carpet area</div><div style={{ fontWeight: "bold" }}>{carpetArea} sq.ft</div></div>
@@ -44,12 +47,12 @@ function Property({ id, title, rent, carpetArea, bedrooms, bathrooms, parking, p
             </div>
             <div className='bottom-container'>
                 {/* Bottom */}
-                <div style={{ fontSize: "14px", color: "grey" }}>
+                <div className='bottom-container-desc' style={{ fontSize: "14px", color: "grey" }}>
                     {propertyDescription}
                 </div>
                 <div className='bottom-right-container'>
                     <div>
-                        <div><span style={{ color: "grey", fontSize: "14px" }}>Agent:</span> <span style={{ fontSize: "14px", fontWeight: "bold" }}>{listedBy}</span></div>
+                        <div><span style={{ color: "grey", fontSize: "14px" }}>Agent:</span> <span style={{ fontSize: "14px", fontWeight: "bold" }}>{listedBy ? listedBy === userInfo?._id && userInfo?.firstName + " " + userInfo?.lastName : ""}</span></div>
                         <div><span style={{ color: "grey", fontSize: "14px" }}>Posted :</span> <span style={{ fontSize: "14px", fontWeight: "bold" }}>{moment.duration(moment().diff(moment(listedOn))).humanize()}</span></div>
                     </div>
                     <div className='bottom-right-botton'>

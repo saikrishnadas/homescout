@@ -90,6 +90,9 @@ const propertySchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    imageURL: {
+        type: String
+    }
 }, { timestamps: true });
 
 const Property = mongoose.model('Property', propertySchema);

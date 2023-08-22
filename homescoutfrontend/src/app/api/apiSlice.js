@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logOut, setCredentials } from "../../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: "http://localhost:4001",
+    baseUrl: "https://homescout-api.onrender.com",
     credentials: "include",//To include auth information in cookies
     //sets Authorization token to all the headers
     prepareHeaders: (headers, { getState }) => {
